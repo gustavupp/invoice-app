@@ -1,32 +1,72 @@
-import React, { useState, useRef } from 'react'
+import React, { useContext, useState } from 'react'
 import LineItem from './LineItem'
+import { AppContext } from './Context'
+import './styles/NewInvoice.css'
 
 export const NewInvoice = () => {
+  const { invoiceTotal } = useContext(AppContext)
+  console.log(invoiceTotal)
   const [fields, setFields] = useState([])
   const [num, setNum] = useState(1)
-  const container = useRef(null)
-  const lineItems = []
-
+  console.log(fields)
   const handleChange = (e) => {
     e.preventDefault()
     setFields({ ...fields, [e.target.name]: e.target.value })
-    console.log(fields)
   }
-
-  const addNewItem = () => {
-    setNum((num) => num + 1)
-  }
-
   return (
-    <main className="container">
-      <form className="container">
+    <main className="container mt-4">
+      <form>
+        <div className="form-group">
+          <label htmlFor="invoice-number">Invoice Number</label>
+          <input
+            type="number"
+            className="form-control"
+            id="invoice-number"
+            placeholder="1"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="from">From</label>
+          <input
+            type="text"
+            className="form-control"
+            id="from"
+            name="from"
+            onChange={(e) => handleChange(e)}
+            placeholder="Who is this invoice from?"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="billTo">Bill To</label>
+          <input
+            type="text"
+            className="form-control"
+            id="billTo"
+            name="billTo"
+            onChange={(e) => handleChange(e)}
+            placeholder="Who is this invoice to?"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="date">Date</label>
+          <input
+            type="date"
+            className="form-control"
+            id="date"
+            name="date"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+
         <table className="table">
-          <thead className="thead-light">
+          <thead className="thead-dark">
             <tr>
               <th scope="col">#</th>
               <th scope="col">Service</th>
-              <th scope="col">Hours</th>
+              <th scope="col">Quantity</th>
               <th scope="col">Rate</th>
+              <th scope="col">Amount</th>
             </tr>
           </thead>
           <tbody>
@@ -37,16 +77,18 @@ export const NewInvoice = () => {
         </table>
 
         <button
-          className="btn btn-primary mr-3"
+          className="btn btn-success mr-3"
           type="button"
           id="btn"
-          onClick={addNewItem}
+          onClick={() => setNum((num) => num + 1)}
         >
-          New Item
+          + Line Item
         </button>
-        <button className="btn btn-success" type="submit" id="submit">
-          Submit
-        </button>
+
+        <div className="subtotal">
+          <h5>Subtotal:&nbsp; </h5>
+          <h5> $182</h5>
+        </div>
       </form>
     </main>
   )

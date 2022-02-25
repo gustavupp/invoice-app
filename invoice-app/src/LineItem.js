@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
+import { AppContext } from './Context'
 
 const LineItem = ({ handleChange, index }) => {
-  console.log(index)
+  const { invoiceTotal } = useContext(AppContext)
+  const quantity = useRef(null)
+  const rate = useRef(null)
+
   return (
     <>
       <tr>
@@ -11,21 +15,31 @@ const LineItem = ({ handleChange, index }) => {
             type="text"
             name={`service${index}`}
             onChange={(e) => handleChange(e)}
+            placeholder=" Description of service..."
           />
         </td>
         <td>
           <input
-            type="text"
-            name={`hours${index}`}
+            ref={quantity}
+            type="number"
+            name={`quantity${index}`}
             onChange={(e) => handleChange(e)}
+            placeholder=" Quantity"
           />
         </td>
         <td>
           <input
-            type="text"
+            ref={rate}
+            type="number"
             name={`rate${index}`}
             onChange={(e) => handleChange(e)}
+            placeholder=" $"
           />
+        </td>
+        <td>
+          {quantity.current && rate.current
+            ? '$' + (quantity.current.value * rate.current.value).toFixed(2)
+            : '$' + 0}
         </td>
       </tr>
     </>
