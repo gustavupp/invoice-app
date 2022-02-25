@@ -1,22 +1,20 @@
 import React, { useState, useRef } from 'react'
+import LineItem from './LineItem'
 
 export const NewInvoice = () => {
   const [fields, setFields] = useState([])
+  const [num, setNum] = useState(1)
   const container = useRef(null)
+  const lineItems = []
+
   const handleChange = (e) => {
     e.preventDefault()
     setFields({ ...fields, [e.target.name]: e.target.value })
     console.log(fields)
-    console.log(container.current)
   }
-  let lineItems = Array.from(document.querySelectorAll('.line-item'))
+
   const addNewItem = () => {
-    let newLineItem = document.createElement('div')
-    newLineItem.setAttribute('class', 'line-item')
-    newLineItem.innerHTML = `<label htmlFor="item">item</label>
-                                <input type="text"  />`
-    container.current.append(newLineItem)
-    lineItems.push(newLineItem)
+    setNum((num) => num + 1)
   }
 
   return (
@@ -32,30 +30,9 @@ export const NewInvoice = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>
-                <input
-                  type="text"
-                  name="service"
-                  onChange={(e) => handleChange(e)}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="hours"
-                  onChange={(e) => handleChange(e)}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="rate"
-                  onChange={(e) => handleChange(e)}
-                />
-              </td>
-            </tr>
+            {Array.from({ length: num }).map((_, index) => (
+              <LineItem key={index} index={index} handleChange={handleChange} />
+            ))}
           </tbody>
         </table>
 
