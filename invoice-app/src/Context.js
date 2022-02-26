@@ -1,22 +1,34 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import { reducer } from './reducer'
 
 const AppContext = React.createContext()
 
 const intialState = {
-  invoiceTotal: 2,
-  lineTotal: 0,
+  invoiceNumber: 0,
+  lineItems: [],
+  subtotal: 0,
+  from: '',
+  to: '',
+  date: '',
 }
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState)
 
-  const lineItemCount = (lineTotal) => {
-    dispatch({ type: 'SET_LINE_TOTAL', payload: lineTotal })
+  useEffect(() => {
+    dispatch({ type: 'UPDATE_SUBTOTAL' })
+  }, [state.lineItems])
+
+  const addLineItem = (target) => {
+    dispatch({ type: 'ADD_LINE_ITEM', payload: target })
+  }
+
+  const addFields = (field) => {
+    dispatch({ type: 'SET_DYNAMIC_FIELDS', payload: field })
   }
 
   return (
-    <AppContext.Provider value={{ ...state, lineItemCount }}>
+    <AppContext.Provider value={{ ...state, addLineItem, addFields }}>
       {children}
     </AppContext.Provider>
   )

@@ -1,31 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from './Context'
+import { AiOutlineClose } from 'react-icons/ai'
 import './styles/NewInvoice.css'
 
 export const NewInvoice = () => {
-  const { invoiceTotal } = useContext(AppContext)
-  const [lineItems, setLineItems] = useState([])
+  const { lineItems, addLineItem, subtotal, addFields } = useContext(AppContext)
   const [lineItemTotal, setLineItemTotal] = useState(0)
   const [service, setService] = useState('')
   const [quantity, setQuantity] = useState('')
   const [rate, setRate] = useState('')
-  const [subtotal, setSubtotal] = useState(0)
 
   useEffect(() => {
     setLineItemTotal(rate * quantity)
   }, [rate, quantity])
 
-  useEffect(() => {
-    let total = lineItems?.reduce((acc, cur) => {
-      acc += cur.lineItemTotal
-      return acc
-    }, 0)
-    setSubtotal(total)
-  }, [lineItems])
-
-  const addLineItem = (e) => {
-    e.preventDefault()
-
+  const addIndividualItem = () => {
+    //only go ahead if quantity and rate fields are not empty
     if (quantity && rate) {
       let newItem = {
         service,
@@ -33,11 +23,14 @@ export const NewInvoice = () => {
         rate,
         lineItemTotal,
       }
+
+      addLineItem(newItem) //dispatch action
+
+      //reset fields
       setQuantity('')
       setRate('')
       setLineItemTotal(0)
       setService('')
-      setLineItems([...lineItems, newItem])
     }
   }
 
@@ -49,7 +42,9 @@ export const NewInvoice = () => {
           <input
             type="number"
             className="form-control"
-            id="invoice-number"
+            id="invoiceNumber"
+            name="invoiceNumber"
+            onChange={(e) => addFields(e.target)}
             placeholder="1"
           />
         </div>
@@ -60,18 +55,18 @@ export const NewInvoice = () => {
             className="form-control"
             id="from"
             name="from"
-            //onChange={(e) => handleChange(e)}
+            onChange={(e) => addFields(e.target)}
             placeholder="Who is this invoice from?"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="billTo">Bill To</label>
+          <label htmlFor="to">Bill To</label>
           <input
             type="text"
             className="form-control"
-            id="billTo"
-            name="billTo"
-            //onChange={(e) => handleChange(e)}
+            id="to"
+            name="to"
+            onChange={(e) => addFields(e.target)}
             placeholder="Who is this invoice to?"
           />
         </div>
@@ -83,7 +78,7 @@ export const NewInvoice = () => {
             className="form-control"
             id="date"
             name="date"
-            //onChange={(e) => handleChange(e)}
+            onChange={(e) => addFields(e.target)}
           />
         </div>
 
@@ -94,6 +89,7 @@ export const NewInvoice = () => {
               <th scope="col">Quantity</th>
               <th scope="col">Rate</th>
               <th scope="col">Amount</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -128,16 +124,20 @@ export const NewInvoice = () => {
               <td>${lineItemTotal}</td>
             </tr>
 
-            {lineItems.map((item) => {
-              return (
-                <tr>
-                  <td>{item.service}</td>
-                  <td>{item.quantity} </td>
-                  <td>{item.rate}</td>
-                  <td>${item.lineItemTotal}</td>
-                </tr>
-              )
-            })}
+            {lineItems &&
+              lineItems.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{item.service}</td>
+                    <td>{item.quantity} </td>
+                    <td>{item.rate}</td>
+                    <td>${item.lineItemTotal}</td>
+                    <td>
+                      <AiOutlineClose />
+                    </td>
+                  </tr>
+                )
+              })}
           </tbody>
         </table>
 
@@ -145,7 +145,7 @@ export const NewInvoice = () => {
           className="btn btn-success mr-3"
           type="button"
           id="btn"
-          onClick={addLineItem}
+          onClick={addIndividualItem}
         >
           + Line Item
         </button>
