@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import LineItem from './LineItem'
 import { AppContext } from './Context'
 import './styles/NewInvoice.css'
 
@@ -18,28 +17,28 @@ export const NewInvoice = () => {
 
   useEffect(() => {
     let total = lineItems?.reduce((acc, cur) => {
-      console.log({ acc, cur })
       acc += cur.lineItemTotal
       return acc
     }, 0)
     setSubtotal(total)
   }, [lineItems])
 
-  console.log(lineItems)
-
-  const handleSubmit = (e) => {
+  const addLineItem = (e) => {
     e.preventDefault()
-    let newItem = {
-      service,
-      quantity,
-      rate,
-      lineItemTotal,
+
+    if (quantity && rate) {
+      let newItem = {
+        service,
+        quantity,
+        rate,
+        lineItemTotal,
+      }
+      setQuantity('')
+      setRate('')
+      setLineItemTotal(0)
+      setService('')
+      setLineItems([...lineItems, newItem])
     }
-    setQuantity('')
-    setRate('')
-    setLineItemTotal(0)
-    setService('')
-    setLineItems([...lineItems, newItem])
   }
 
   return (
@@ -91,7 +90,6 @@ export const NewInvoice = () => {
         <table className="table">
           <thead className="thead-dark">
             <tr>
-              <th scope="col">#</th>
               <th scope="col">Service</th>
               <th scope="col">Quantity</th>
               <th scope="col">Rate</th>
@@ -100,7 +98,6 @@ export const NewInvoice = () => {
           </thead>
           <tbody>
             <tr>
-              <th scope="row">1</th>
               <td>
                 <input
                   type="text"
@@ -130,6 +127,17 @@ export const NewInvoice = () => {
               </td>
               <td>${lineItemTotal}</td>
             </tr>
+
+            {lineItems.map((item) => {
+              return (
+                <tr>
+                  <td>{item.service}</td>
+                  <td>{item.quantity} </td>
+                  <td>{item.rate}</td>
+                  <td>${item.lineItemTotal}</td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
 
@@ -137,17 +145,16 @@ export const NewInvoice = () => {
           className="btn btn-success mr-3"
           type="button"
           id="btn"
-          //onClick={() => setNum((num) => num + 1)}
-          onClick={handleSubmit}
+          onClick={addLineItem}
         >
           + Line Item
         </button>
-
-        <div className="subtotal">
-          <h5>Subtotal:&nbsp; </h5>
-          <h5> ${subtotal}</h5>
-        </div>
       </form>
+
+      <div className="subtotal">
+        <h5>Subtotal:&nbsp; </h5>
+        <h5> ${subtotal}</h5>
+      </div>
     </main>
   )
 }
