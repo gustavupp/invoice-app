@@ -2,9 +2,18 @@ import React, { useEffect, useRef, useContext } from 'react'
 import { AppContext } from './Context'
 
 const LineItem = ({ handleChange, index }) => {
-  const { invoiceTotal } = useContext(AppContext)
+  const { lineItemCount } = useContext(AppContext)
+  console.log(lineItemCount)
   const quantity = useRef(null)
   const rate = useRef(null)
+  const amount =
+    quantity.current && rate.current
+      ? parseFloat((quantity.current.value * rate.current.value).toFixed(2))
+      : 0
+
+  useEffect(() => {
+    lineItemCount(amount)
+  }, [amount])
 
   return (
     <>
@@ -36,11 +45,7 @@ const LineItem = ({ handleChange, index }) => {
             placeholder=" $"
           />
         </td>
-        <td>
-          {quantity.current && rate.current
-            ? '$' + (quantity.current.value * rate.current.value).toFixed(2)
-            : '$' + 0}
-        </td>
+        <td>{`$${amount}`}</td>
       </tr>
     </>
   )
