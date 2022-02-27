@@ -27,8 +27,15 @@ const AppProvider = ({ children }) => {
     dispatch({ type: 'SET_DYNAMIC_FIELDS', payload: field })
   }
 
+  const deleteLineItem = (e, id) => {
+    e.preventDefault()
+    dispatch({ type: 'DELETE_LINE_ITEM', payload: id })
+  }
+
   return (
-    <AppContext.Provider value={{ ...state, addLineItem, addFields }}>
+    <AppContext.Provider
+      value={{ ...state, addLineItem, addFields, deleteLineItem }}
+    >
       {children}
     </AppContext.Provider>
   )

@@ -4,7 +4,8 @@ import { AiOutlineClose } from 'react-icons/ai'
 import './styles/NewInvoice.css'
 
 export const NewInvoice = () => {
-  const { lineItems, addLineItem, subtotal, addFields } = useContext(AppContext)
+  const { lineItems, addLineItem, subtotal, addFields, deleteLineItem } =
+    useContext(AppContext)
   const [lineItemTotal, setLineItemTotal] = useState(0)
   const [service, setService] = useState('')
   const [quantity, setQuantity] = useState('')
@@ -18,14 +19,14 @@ export const NewInvoice = () => {
     //only go ahead if quantity and rate fields are not empty
     if (quantity && rate) {
       let newItem = {
+        id: Date.now(),
         service,
         quantity,
         rate,
         lineItemTotal,
       }
-
-      addLineItem(newItem) //dispatch action
-
+      //dispatch action
+      addLineItem(newItem)
       //reset fields
       setQuantity('')
       setRate('')
@@ -126,14 +127,17 @@ export const NewInvoice = () => {
 
             {lineItems &&
               lineItems.map((item, index) => {
+                const { service, quantity, rate, lineItemTotal, id } = item
                 return (
                   <tr key={index}>
-                    <td>{item.service}</td>
-                    <td>{item.quantity} </td>
-                    <td>{item.rate}</td>
-                    <td>${item.lineItemTotal}</td>
+                    <td>{service}</td>
+                    <td>{quantity} </td>
+                    <td>{rate}</td>
+                    <td>${lineItemTotal}</td>
                     <td>
-                      <AiOutlineClose />
+                      <button onClick={(e) => deleteLineItem(e, id)}>
+                        <AiOutlineClose />
+                      </button>
                     </td>
                   </tr>
                 )

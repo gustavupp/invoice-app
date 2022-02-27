@@ -9,8 +9,12 @@ export const reducer = (state, action) => {
       }, 0)
       return { ...state, subtotal: total }
     case 'SET_DYNAMIC_FIELDS':
-      //if (action.payload.name === 'to') return { ...state, to: action.payload.value }
       return { ...state, [action.payload.name]: action.payload.value }
+    case 'DELETE_LINE_ITEM':
+      let tempLineItems = state.lineItems.filter(
+        (item) => item.id !== action.payload
+      )
+      return { ...state, lineItems: tempLineItems }
     default:
       return { ...state }
   }
