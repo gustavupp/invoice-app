@@ -23,14 +23,18 @@ export const reducer = (state, action) => {
       return { ...state, lineItems: tempLineItems }
 
     case 'EDIT_LINE_ITEM':
-      let editingItem = state.lineItems.find(
-        (item) => item.id === action.payload
-      )
       return {
         ...state,
-        editingLineItem: editingItem,
-        editingLineItemId: editingItem.id,
+        editingLineItemId: action.payload,
         isEditingLineItem: true,
+      }
+
+    case 'UPDATE_LIST':
+      return {
+        ...state,
+        lineItems: action.payload,
+        isEditingLineItem: false,
+        editingLineItemId: '',
       }
 
     default:

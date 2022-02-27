@@ -10,7 +10,6 @@ const intialState = {
   from: '',
   to: '',
   date: '',
-  editingLineItem: '',
   editingLineItemId: '',
   isEditingLineItem: false,
 }
@@ -31,7 +30,18 @@ const AppProvider = ({ children }) => {
   }, [rate, quantity])
 
   const addLineItem = () => {
-    if (quantity && rate) {
+    if (state.isEditingLineItem) {
+      let updatedItemList = state.lineItems.map((item) => {
+        if (item.id === state.editingLineItemId) {
+          item.service = service
+          item.rate = rate
+          item.quantity = quantity
+          item.lineItemTotal = lineItemTotal
+        }
+        return item
+      })
+      dispatch({ type: 'UPDATE_LIST', payload: updatedItemList })
+    } else if (quantity && rate) {
       let newItem = {
         id: Date.now(),
         service,
@@ -39,14 +49,13 @@ const AppProvider = ({ children }) => {
         rate,
         lineItemTotal,
       }
-
       dispatch({ type: 'ADD_LINE_ITEM', payload: newItem })
-      //reset fields
-      setQuantity('')
-      setRate('')
-      setLineItemTotal(0)
-      setService('')
     }
+    //reset fields
+    setQuantity('')
+    setRate('')
+    setLineItemTotal(0)
+    setService('')
   }
 
   const addFields = (field) => {
@@ -60,7 +69,14 @@ const AppProvider = ({ children }) => {
 
   const editLineItem = (e, id) => {
     e.preventDefault()
-    dispatch({ type: 'EDIT_LINE_ITEM', payload: id })
+    let editingLineItem = state.lineItems.find((item) => item.id === id)
+
+    setRate(editingLineItem.rate)
+    setQuantity(editingLineItem.quantity)
+    setService(editingLineItem.service)
+    setLineItemTotal(editingLineItem.lineItemTotal)
+
+    dispatch({ type: 'EDIT_LINE_ITEM', payload: editingLineItem.id })
   }
 
   return (

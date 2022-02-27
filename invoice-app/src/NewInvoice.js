@@ -142,25 +142,16 @@ export const NewInvoice = () => {
           </tbody>
         </table>
 
-        {isEditingLineItem ? (
+        {
           <button
             className="btn btn-primary mr-3"
             type="button"
             id="btn"
-            onClick={() => console.log('saving')}
-          >
-            Save
-          </button>
-        ) : (
-          <button
-            className="btn btn-success mr-3"
-            type="button"
-            id="btn"
             onClick={addLineItem}
           >
-            + Item
+            {isEditingLineItem ? 'Save' : '+ Item'}
           </button>
-        )}
+        }
       </form>
 
       <div className="subtotal">
