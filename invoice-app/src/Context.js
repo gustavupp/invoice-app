@@ -10,6 +10,7 @@ const intialState = {
   from: '',
   to: '',
   date: '',
+  number: '',
   editingLineItemId: '',
   isEditingLineItem: false,
 }

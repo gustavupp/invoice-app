@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from './Context'
 import { AiOutlineClose, AiFillEdit } from 'react-icons/ai'
-import './styles/NewInvoice.css'
+import { Link } from 'react-router-dom'
+//import './styles/newInvoice.css'
 
 export const NewInvoice = () => {
   const {
@@ -12,8 +13,6 @@ export const NewInvoice = () => {
     deleteLineItem,
     editLineItem,
     isEditingLineItem,
-    editingLineItem,
-    editingLineItemId,
     service,
     quantity,
     rate,
@@ -21,55 +20,66 @@ export const NewInvoice = () => {
     setService,
     setQuantity,
     setRate,
+    to,
+    from,
+    date,
+    number,
   } = useContext(AppContext)
 
   return (
-    <main className="container mt-4">
+    <main className="container mt-5">
       <form>
-        <div className="form-group">
-          <label htmlFor="invoice-number">Invoice Number</label>
-          <input
-            type="number"
-            className="form-control"
-            id="invoiceNumber"
-            name="invoiceNumber"
-            onChange={(e) => addFields(e.target)}
-            placeholder="1"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="from">From</label>
-          <input
-            type="text"
-            className="form-control"
-            id="from"
-            name="from"
-            onChange={(e) => addFields(e.target)}
-            placeholder="Who is this invoice from?"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="to">Bill To</label>
-          <input
-            type="text"
-            className="form-control"
-            id="to"
-            name="to"
-            onChange={(e) => addFields(e.target)}
-            placeholder="Who is this invoice to?"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="date">Date</label>
-          <input
-            type="date"
-            className="form-control"
-            id="date"
-            name="date"
-            onChange={(e) => addFields(e.target)}
-          />
-        </div>
+        <section className="d-flex justify-content-between">
+          <div className="form-group">
+            <label htmlFor="from">From</label>
+            <input
+              type="text"
+              className="form-control"
+              id="from"
+              name="from"
+              value={from}
+              onChange={(e) => addFields(e.target)}
+              placeholder="Who is this invoice from?"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="to">Bill To</label>
+            <input
+              type="text"
+              className="form-control"
+              id="to"
+              name="to"
+              value={to}
+              onChange={(e) => addFields(e.target)}
+              placeholder="Who is this invoice to?"
+            />
+          </div>
+          <div>
+            <div className="form-group">
+              <label htmlFor="invoice-number">Invoice Number</label>
+              <input
+                type="number"
+                className="form-control"
+                id="number"
+                name="number"
+                value={number}
+                onChange={(e) => addFields(e.target)}
+                placeholder="#1"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="date">Date</label>
+              <input
+                type="date"
+                className="form-control"
+                id="date"
+                name="date"
+                value={date}
+                onChange={(e) => addFields(e.target)}
+              />
+            </div>
+          </div>
+        </section>
 
         <table className="table">
           <thead className="thead-dark">
@@ -154,9 +164,15 @@ export const NewInvoice = () => {
         }
       </form>
 
-      <div className="subtotal">
+      <div className="d-flex justify-content-end m-2">
         <h5>Subtotal:&nbsp; </h5>
         <h5> ${subtotal}</h5>
+      </div>
+
+      <div className="d-flex justify-content-end m-2">
+        <Link to="/invoice" className="btn btn-success">
+          Generate Invoice
+        </Link>
       </div>
     </main>
   )

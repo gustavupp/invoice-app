@@ -1,7 +1,11 @@
-import React, { useRef } from 'react'
-import './styles/NewInvoice.css'
+import React, { useRef, useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { AppContext } from './Context'
+import { FiPhoneCall, FiMail } from 'react-icons/fi'
+import './styles/invoiceTemplate.css'
 
 export function InvoiceTemplate() {
+  const { lineItems, subtotal, from, to, date, number } = useContext(AppContext)
   const invoice = useRef(null)
 
   const handleClick = () => {
@@ -9,34 +13,28 @@ export function InvoiceTemplate() {
   }
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <div className="col-md-12">
         <div className="invoice" ref={invoice}>
-          <div className="invoice-company text-inverse f-w-600">
-            Company Name, Inc
-          </div>
+          <div className="invoice-company text-inverse f-w-600">LOGO</div>
 
           <div className="invoice-header">
             <div className="invoice-from">
               <small>from</small>
               <address className="m-t-5 m-b-5">
-                <strong className="text-inverse">Twitter, Inc.</strong>
-                <br />
-                abn: 0000000000
+                <strong className="text-inverse">{from}</strong>
               </address>
             </div>
             <div className="invoice-to">
               <small>to</small>
               <address className="m-t-5 m-b-5">
-                <strong className="text-inverse">Company Name</strong>
-                <br />
-                abn: 0000000000
+                <strong className="text-inverse">{to}</strong>
               </address>
             </div>
             <div className="invoice-date">
               <small>Invoice</small>
-              <div className="date text-inverse m-t-5">25/02/2022</div>
-              <div className="invoice-detail">#172</div>
+              <div className="date text-inverse m-t-5">{date}</div>
+              <div className="invoice-detail">#{number}</div>
             </div>
           </div>
 
@@ -58,32 +56,19 @@ export function InvoiceTemplate() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <span className="text-inverse">
-                        Website design &amp; development
-                      </span>
-                    </td>
-                    <td className="text-center">$50.00</td>
-                    <td className="text-center">50</td>
-                    <td className="text-right">$2,500.00</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="text-inverse">br/anding</span>
-                    </td>
-                    <td className="text-center">$50.00</td>
-                    <td className="text-center">40</td>
-                    <td className="text-right">$2,000.00</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="text-inverse">Redesign Service</span>
-                    </td>
-                    <td className="text-center">$50.00</td>
-                    <td className="text-center">50</td>
-                    <td className="text-right">$2,500.00</td>
-                  </tr>
+                  {lineItems.map((item) => {
+                    const { service, rate, quantity, lineItemTotal } = item
+                    return (
+                      <tr>
+                        <td>
+                          <span className="text-inverse">{service}</span>
+                        </td>
+                        <td className="text-center">${rate}</td>
+                        <td className="text-center">{quantity}</td>
+                        <td className="text-right">${lineItemTotal}</td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
@@ -93,52 +78,56 @@ export function InvoiceTemplate() {
                 <div className="invoice-price-row">
                   <div className="sub-price">
                     <small>SUBTOTAL</small>
-                    <span className="text-inverse">$4,500.00</span>
+                    <span className="text-inverse">${subtotal}</span>
                   </div>
                   <div className="sub-price">
                     <i className="fa fa-plus text-muted"></i>
                   </div>
                   <div className="sub-price">
-                    <small>PAYPAL FEE (5.4%)</small>
-                    <span className="text-inverse">$108.00</span>
+                    <small>PAYPAL FEE (0%)</small>
+                    <span className="text-inverse">$0.00</span>
                   </div>
                 </div>
               </div>
               <div className="invoice-price-right">
-                <small>TOTAL</small> <span className="f-w-600">$4508.00</span>
+                <small>TOTAL</small>{' '}
+                <span className="f-w-600">${subtotal}</span>
               </div>
             </div>
           </div>
-          <div className="invoice-note">
-            * Make all cheques payable to [Your Company Name]
+          <div>
+            <p>
+              <strong>PAYMENT DETAILS:</strong>
+            </p>
+            <strong>WESTPAC</strong>
             <br />
-            * Payment is due within 30 days
-            <br />* If you have any questions concerning this invoice, contact
-            [Name, Phone Number, Email]
+            <strong>BSB:</strong> 734-013
+            <br /> <strong>Account:</strong> 700201 <br />
+            <strong>Name:</strong> {from}
+            <hr />
+            <strong>ABN: </strong> 56445110251
+            <br />
+            <strong>Address: </strong> 417B Kessels Road, Robertson QLD
           </div>
-
-          <div className="invoice-footer">
-            <p className="text-center m-b-5 f-w-600">
-              THANK YOU FOR YOUR BUSINESS
+          <hr />
+          <div>
+            <p className="text-center ">
+              <strong>THANK YOU {to}!</strong>
             </p>
             <p className="text-center">
-              <span className="m-r-10">
-                <i className="fa fa-fw fa-lg fa-globe"></i> matiasgallipoli.com
-              </span>
-              <span className="m-r-10">
-                <i className="fa fa-fw fa-lg fa-phone-volume"></i>{' '}
-                T:016-18192302
-              </span>
-              <span className="m-r-10">
-                <i className="fa fa-fw fa-lg fa-envelope"></i> rtiemps@gmail.com
-              </span>
+              <FiPhoneCall /> 0490 532 668 | <FiMail /> xgustavux@hotmail.com
             </p>
           </div>
         </div>
         <br />
-        <button className="btn btn-primary" onClick={handleClick}>
-          Save
-        </button>
+        <div className="d-flex justify-content-between">
+          <Link to="/" className="btn btn-success mx-2">
+            Back
+          </Link>
+          <button className="btn btn-primary mx-2" onClick={handleClick}>
+            Save And Download
+          </button>
+        </div>
       </div>
     </div>
   )
