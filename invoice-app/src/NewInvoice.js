@@ -1,39 +1,27 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from './Context'
-import { AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineClose, AiFillEdit } from 'react-icons/ai'
 import './styles/NewInvoice.css'
 
 export const NewInvoice = () => {
-  const { lineItems, addLineItem, subtotal, addFields, deleteLineItem } =
-    useContext(AppContext)
-  const [lineItemTotal, setLineItemTotal] = useState(0)
-  const [service, setService] = useState('')
-  const [quantity, setQuantity] = useState('')
-  const [rate, setRate] = useState('')
-
-  useEffect(() => {
-    setLineItemTotal(rate * quantity)
-  }, [rate, quantity])
-
-  const addIndividualItem = () => {
-    //only go ahead if quantity and rate fields are not empty
-    if (quantity && rate) {
-      let newItem = {
-        id: Date.now(),
-        service,
-        quantity,
-        rate,
-        lineItemTotal,
-      }
-      //dispatch action
-      addLineItem(newItem)
-      //reset fields
-      setQuantity('')
-      setRate('')
-      setLineItemTotal(0)
-      setService('')
-    }
-  }
+  const {
+    lineItems,
+    addLineItem,
+    subtotal,
+    addFields,
+    deleteLineItem,
+    editLineItem,
+    isEditingLineItem,
+    editingLineItem,
+    editingLineItemId,
+    service,
+    quantity,
+    rate,
+    lineItemTotal,
+    setService,
+    setQuantity,
+    setRate,
+  } = useContext(AppContext)
 
   return (
     <main className="container mt-4">
@@ -135,7 +123,16 @@ export const NewInvoice = () => {
                     <td>{rate}</td>
                     <td>${lineItemTotal}</td>
                     <td>
-                      <button onClick={(e) => deleteLineItem(e, id)}>
+                      <button
+                        className="btn"
+                        onClick={(e) => editLineItem(e, id)}
+                      >
+                        <AiFillEdit />
+                      </button>
+                      <button
+                        className="btn"
+                        onClick={(e) => deleteLineItem(e, id)}
+                      >
                         <AiOutlineClose />
                       </button>
                     </td>
@@ -145,14 +142,25 @@ export const NewInvoice = () => {
           </tbody>
         </table>
 
-        <button
-          className="btn btn-success mr-3"
-          type="button"
-          id="btn"
-          onClick={addIndividualItem}
-        >
-          + Line Item
-        </button>
+        {isEditingLineItem ? (
+          <button
+            className="btn btn-primary mr-3"
+            type="button"
+            id="btn"
+            onClick={() => console.log('saving')}
+          >
+            Save
+          </button>
+        ) : (
+          <button
+            className="btn btn-success mr-3"
+            type="button"
+            id="btn"
+            onClick={addLineItem}
+          >
+            + Item
+          </button>
+        )}
       </form>
 
       <div className="subtotal">
