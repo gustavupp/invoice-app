@@ -4,6 +4,7 @@ import { reducer } from './reducer'
 const AppContext = React.createContext()
 
 const intialState = {
+  invoices: [],
   invoiceNumber: '',
   lineItems: [],
   subtotal: 0,
@@ -101,7 +102,7 @@ const AppProvider = ({ children }) => {
           invoiceNumber: state.invoiceNumber,
           date: state.date,
           subtotal: state.subtotal,
-          lineItems: state.lineItems,
+          lineItems: JSON.stringify(state.lineItems),
         }),
       }
 
@@ -109,9 +110,27 @@ const AppProvider = ({ children }) => {
         await fetch('http://localhost:3001/api/add-invoice', options).then(
           (res) => console.log(res)
         )
+        // .then(() => {
+        //   dispatch({ type: 'CLEAR_FIELDS' })
+        //   setQuantity('')
+        //   setRate('')
+        //   setLineItemTotal(0)
+        //   setService('')
+        // })
       } catch (error) {
         console.log(error)
       }
+    }
+  }
+
+  const getInvoices = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/get-invoices')
+      const data = await response.json()
+      console.log(data)
+      dispatch({ type: 'SET_INVOICES', payload: data })
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -131,6 +150,7 @@ const AppProvider = ({ children }) => {
         rate,
         lineItemTotal,
         postInvoiceToServer,
+        getInvoices,
       }}
     >
       {children}

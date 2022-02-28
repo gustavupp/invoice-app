@@ -37,6 +37,19 @@ export const reducer = (state, action) => {
         editingLineItemId: '',
       }
 
+    case 'SET_INVOICES':
+      return { ...state, invoices: action.payload }
+
+    case 'CLEAR_FIELDS':
+      return {
+        ...state,
+        invoiceNumber: '',
+        from: '',
+        to: '',
+        date: '',
+        lineItems: [],
+      }
+
     default:
       return { ...state }
   }
