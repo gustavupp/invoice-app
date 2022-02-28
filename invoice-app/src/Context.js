@@ -84,7 +84,6 @@ const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         ...state,
-        addLineItem,
         addFields,
         deleteLineItem,
         editLineItem,

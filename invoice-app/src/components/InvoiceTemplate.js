@@ -1,8 +1,9 @@
 import React, { useRef, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { AppContext } from './Context'
+import { AppContext } from '../Context'
 import { FiPhoneCall, FiMail } from 'react-icons/fi'
-import './styles/invoiceTemplate.css'
+import { FaDownload } from 'react-icons/fa'
+import '../styles/invoiceTemplate.css'
 
 export function InvoiceTemplate() {
   const { lineItems, subtotal, from, to, date, number } = useContext(AppContext)
@@ -121,11 +122,11 @@ export function InvoiceTemplate() {
         </div>
         <br />
         <div className="d-flex justify-content-between">
-          <Link to="/" className="btn btn-success mx-2">
+          <Link to="/new-invoice" className="btn btn-success mx-2">
             Back
           </Link>
           <button className="btn btn-primary mx-2" onClick={handleClick}>
-            Save And Download
+            <FaDownload /> Download And Save
           </button>
         </div>
       </div>
