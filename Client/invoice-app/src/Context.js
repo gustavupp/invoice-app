@@ -13,6 +13,7 @@ const intialState = {
   date: '',
   editingLineItemId: '',
   isEditingLineItem: false,
+  image: '',
 }
 
 const AppProvider = ({ children }) => {
@@ -134,6 +135,10 @@ const AppProvider = ({ children }) => {
     }
   }
 
+  const setImageFile = (image) => {
+    dispatch({ type: 'LOAD_IMAGE_FILE', payload: image })
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -151,6 +156,7 @@ const AppProvider = ({ children }) => {
         lineItemTotal,
         postInvoiceToServer,
         getInvoices,
+        setImageFile,
       }}
     >
       {children}

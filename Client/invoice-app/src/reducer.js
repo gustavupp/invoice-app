@@ -50,6 +50,8 @@ export const reducer = (state, action) => {
         lineItems: [],
       }
 
+    case 'LOAD_IMAGE_FILE':
+      return { ...state, image: action.payload }
     default:
       return { ...state }
   }

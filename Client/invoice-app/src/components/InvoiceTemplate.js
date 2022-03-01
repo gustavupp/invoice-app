@@ -6,11 +6,19 @@ import { FaDownload } from 'react-icons/fa'
 import '../styles/invoiceTemplate.css'
 
 export function InvoiceTemplate() {
-  const { lineItems, subtotal, from, to, date, number } = useContext(AppContext)
+  const { lineItems, subtotal, from, to, date, invoiceNumber, image } =
+    useContext(AppContext)
   const invoice = useRef(null)
 
   const downloadInvoice = () => {
-    window.html2pdf(invoice.current)
+    let opt = {
+      margin: 0,
+      filename: `invoice-${invoiceNumber}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { dpi: 192, scale: 4, letterRendering: true, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    }
+    window.html2pdf(invoice.current, opt)
   }
 
   return (
@@ -18,25 +26,27 @@ export function InvoiceTemplate() {
       <div className="col-md-12">
         <div className="invoice" ref={invoice}>
           {/* ADD LOGO UPDATED BY USER */}
-          {/* <div className="invoice-company text-inverse f-w-600">LOGO</div> */}
+          <div className="invoice-company text-inverse f-w-600">
+            <img src={image} alt="logo" width="200px" />
+          </div>
 
           <div className="invoice-header">
             <div className="invoice-from">
-              <small>from</small>
+              <p>from</p>
               <address className="m-t-5 m-b-5">
-                <strong className="text-inverse">{from}</strong>
+                <strong>{from}</strong>
               </address>
             </div>
             <div className="invoice-to">
-              <small>to</small>
+              <p>to</p>
               <address className="m-t-5 m-b-5">
-                <strong className="text-inverse">{to}</strong>
+                <strong>{to}</strong>
               </address>
             </div>
             <div className="invoice-date">
-              <small>Invoice</small>
+              <p>Invoice</p>
               <div className="date text-inverse m-t-5">{date}</div>
-              <div className="invoice-detail">#{number}</div>
+              <div className="invoice-detail">#{invoiceNumber}</div>
             </div>
           </div>
 
@@ -92,7 +102,7 @@ export function InvoiceTemplate() {
                 </div>
               </div>
               <div className="invoice-price-right">
-                <small>TOTAL</small>{' '}
+                <small>TOTAL</small>
                 <span className="f-w-600">${subtotal}</span>
               </div>
             </div>

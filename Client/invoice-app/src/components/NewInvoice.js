@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { AppContext } from '../Context'
 import { AiOutlineClose, AiFillEdit } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
@@ -25,11 +25,32 @@ export const NewInvoice = () => {
     date,
     invoiceNumber,
     postInvoiceToServer,
+    setImageFile,
   } = useContext(AppContext)
+
+  const imageOutput = useRef(null)
+
+  const loadImageFile = (e) => {
+    imageOutput.current.src = URL.createObjectURL(e.target.files[0])
+    let image = URL.createObjectURL(e.target.files[0])
+    setImageFile(image)
+  }
 
   return (
     <main className="container my-5 py-3">
       <form>
+        <p>
+          <input
+            type="file"
+            accept="image/*"
+            name="image"
+            id="file"
+            onChange={loadImageFile}
+          />
+        </p>
+        <p>
+          <img id="output" width="200" ref={imageOutput} />
+        </p>
         <section className="row mb-3">
           <div className="form-group col-sm">
             <label htmlFor="from">From</label>
