@@ -20,12 +20,13 @@ export const NewInvoice = () => {
     setService,
     setQuantity,
     setRate,
-    to,
+    billTo,
     from,
     date,
     invoiceNumber,
     postInvoiceToServer,
     setImageFile,
+    image,
   } = useContext(AppContext)
 
   const imageOutput = useRef(null)
@@ -58,15 +59,7 @@ export const NewInvoice = () => {
             </label>
           </div>
         </div>
-        {/* <p>
-          <input
-            type="file"
-            accept="image/*"
-            name="image"
-            id="file"
-            onChange={loadImageFile}
-          />
-        </p> */}
+
         <p>
           <img id="output" width="200" ref={imageOutput} />
         </p>
@@ -89,8 +82,8 @@ export const NewInvoice = () => {
               type="text"
               className="form-control"
               id="to"
-              name="to"
-              value={to}
+              name="billTo"
+              value={billTo}
               onChange={(e) => addFields(e.target)}
               placeholder="Who is this invoice to?"
             />
@@ -216,11 +209,22 @@ export const NewInvoice = () => {
       </div>
 
       <div className="d-flex justify-content-between m-2">
-        <Link to="/" className="btn btn-success">
+        <Link to="/" hi="hiii" className="btn btn-success">
           Back
         </Link>
         <Link
           to="/invoice"
+          state={{
+            data: {
+              lineItems,
+              subtotal,
+              from,
+              billTo,
+              date,
+              invoiceNumber,
+              image,
+            },
+          }} //how to pass values through the 'Link'
           className="btn btn-success"
           onClick={postInvoiceToServer}
         >

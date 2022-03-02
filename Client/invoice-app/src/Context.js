@@ -9,7 +9,7 @@ const intialState = {
   lineItems: [],
   subtotal: 0,
   from: '',
-  to: '',
+  billTo: '',
   date: '',
   editingLineItemId: '',
   isEditingLineItem: false,
@@ -129,7 +129,6 @@ const AppProvider = ({ children }) => {
     try {
       const response = await fetch('http://localhost:3001/api/get-invoices')
       const data = await response.json()
-      console.log(data)
       dispatch({ type: 'SET_INVOICES', payload: data })
     } catch (error) {
       console.log(error)

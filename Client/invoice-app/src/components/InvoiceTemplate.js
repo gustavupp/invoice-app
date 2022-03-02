@@ -1,14 +1,25 @@
 import React, { useRef, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { AppContext } from '../Context'
 import { FiPhoneCall, FiMail } from 'react-icons/fi'
 import { FaDownload } from 'react-icons/fa'
 import '../styles/invoiceTemplate.css'
 
 export function InvoiceTemplate() {
-  const { lineItems, subtotal, from, to, date, invoiceNumber, image } =
-    useContext(AppContext)
+  const {
+    lineItems,
+    subtotal,
+    from,
+    billTo,
+    date,
+    invoiceNumber,
+    image,
+    invoices,
+  } = useContext(AppContext)
   const invoice = useRef(null)
+  console.log(invoices)
+  const { state } = useLocation() //how to grab values passed in to the link component
+  console.log(state)
 
   const downloadInvoice = () => {
     let opt = {
@@ -26,6 +37,7 @@ export function InvoiceTemplate() {
       <div className="col-md-12">
         <div className="invoice" ref={invoice}>
           {/* ADD LOGO UPDATED BY USER */}
+
           <div className="invoice-company text-inverse f-w-600">
             <img src={image} alt="logo" height="150px" />
           </div>
@@ -40,7 +52,7 @@ export function InvoiceTemplate() {
             <div className="invoice-to">
               <p>to</p>
               <address className="m-t-5 m-b-5">
-                <strong>{to}</strong>
+                <strong>{billTo}</strong>
               </address>
             </div>
             <div className="invoice-date">
@@ -124,7 +136,7 @@ export function InvoiceTemplate() {
           <hr />
           <div>
             <p className="text-center ">
-              <strong>THANK YOU {to}!</strong>
+              <strong>THANK YOU {billTo}!</strong>
             </p>
             <p className="text-center">
               <FiPhoneCall /> 0490 532 668 | <FiMail /> xgustavux@hotmail.com
