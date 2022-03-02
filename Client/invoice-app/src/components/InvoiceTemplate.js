@@ -27,7 +27,7 @@ export function InvoiceTemplate() {
         <div className="invoice" ref={invoice}>
           {/* ADD LOGO UPDATED BY USER */}
           <div className="invoice-company text-inverse f-w-600">
-            <img src={image} alt="logo" width="200px" />
+            <img src={image} alt="logo" height="150px" />
           </div>
 
           <div className="invoice-header">

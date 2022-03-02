@@ -102,6 +102,7 @@ const AppProvider = ({ children }) => {
           to: state.to,
           invoiceNumber: state.invoiceNumber,
           date: state.date,
+          image: state.image,
           subtotal: state.subtotal,
           lineItems: JSON.stringify(state.lineItems),
         }),

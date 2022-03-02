@@ -4,7 +4,6 @@ import { AppContext } from '../Context'
 
 const MainPage = () => {
   const { invoices, getInvoices } = useContext(AppContext)
-  console.log(invoices)
 
   useEffect(() => {
     getInvoices()
@@ -15,13 +14,15 @@ const MainPage = () => {
       <h1>Main Page</h1>
       {invoices &&
         invoices.map((item, index) => {
-          const { billTo, invoiceFrom, items } = item
+          const { billTo, invoiceFrom, items, image } = item
+          console.log(image)
           return (
             <>
               <h4 key={index}>
                 From: {invoiceFrom} | To: {billTo}
               </h4>
               <p>{items}</p>
+              <img src={image} alt="logo" height="150px" />
             </>
           )
         })}

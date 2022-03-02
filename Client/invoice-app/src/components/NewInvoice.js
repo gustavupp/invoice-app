@@ -39,7 +39,26 @@ export const NewInvoice = () => {
   return (
     <main className="container my-5 py-3">
       <form>
-        <p>
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <span className="input-group-text">Upload</span>
+          </div>
+          <div className="custom-file">
+            <input
+              type="file"
+              accept="image/*"
+              name="image"
+              className="custom-file-input"
+              id="file"
+              onChange={loadImageFile}
+            />
+
+            <label className="custom-file-label" htmlFor="file">
+              Choose Logo Image
+            </label>
+          </div>
+        </div>
+        {/* <p>
           <input
             type="file"
             accept="image/*"
@@ -47,7 +66,7 @@ export const NewInvoice = () => {
             id="file"
             onChange={loadImageFile}
           />
-        </p>
+        </p> */}
         <p>
           <img id="output" width="200" ref={imageOutput} />
         </p>
