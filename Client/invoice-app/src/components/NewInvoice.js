@@ -90,7 +90,7 @@ export const NewInvoice = () => {
           </div>
           <div className="col-sm">
             <div className="form-group">
-              <label htmlFor="invoice-number">Invoice Number</label>
+              <label htmlFor="number">Invoice Number</label>
               <input
                 type="number"
                 className="form-control"
@@ -209,22 +209,11 @@ export const NewInvoice = () => {
       </div>
 
       <div className="d-flex justify-content-between m-2">
-        <Link to="/" hi="hiii" className="btn btn-success">
+        <Link to="/" className="btn btn-success">
           Back
         </Link>
         <Link
-          to="/invoice"
-          state={{
-            data: {
-              lineItems,
-              subtotal,
-              invoiceFrom,
-              billTo,
-              date,
-              invoiceNumber,
-              image,
-            },
-          }} //how to pass values through the 'Link'
+          to="/invoices/new"
           className="btn btn-success"
           onClick={postInvoiceToServer}
         >

@@ -53,7 +53,10 @@ const MainPage = () => {
                       <td className="text-center">{subtotal}</td>
                       <td className="text-center">{date}</td>
                       <td className="text-center">
-                        <Link to={`/${invoiceId}`} className="btn btn-primary">
+                        <Link
+                          to={`/invoices/${invoiceId}`}
+                          className="btn btn-primary"
+                        >
                           View
                         </Link>
                       </td>

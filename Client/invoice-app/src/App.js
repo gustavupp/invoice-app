@@ -12,7 +12,8 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/new-invoice" element={<NewInvoicePage />} />
-        <Route path="/:invoiceId" element={<InvoiceTemplate />} />
+        <Route path="/invoices/:invoiceId" element={<InvoiceTemplate />} />
+        {/* <Route path="/invoices/new" element={<InvoiceTemplate />} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>

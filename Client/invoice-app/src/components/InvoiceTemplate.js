@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from 'react'
+import React, { useRef, useContext, useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { AppContext } from '../Context'
 import { FiPhoneCall, FiMail } from 'react-icons/fi'
@@ -6,22 +6,41 @@ import { FaDownload } from 'react-icons/fa'
 import '../styles/invoiceTemplate.css'
 
 export function InvoiceTemplate() {
-  const {
-    lineItems,
-    subtotal,
-    invoiceFrom,
-    billTo,
-    date,
-    invoiceNumber,
-    image,
-    invoices,
-  } = useContext(AppContext)
+  const state = useContext(AppContext)
+  const [subtotal, setSubtotal] = useState('')
+  const [invoiceFrom, setInvoiceFrom] = useState('')
+  const [billTo, setBillTo] = useState('')
+  const [date, setDate] = useState('')
+  const [invoiceNumber, setInvoiceNumber] = useState('')
+  const [image, setImage] = useState('')
+  const [lineItems, setLineItems] = useState('')
+
   const invoice = useRef(null)
-
-  const num = useParams()
-  console.log(num)
-
-  const { state } = useLocation() //how to grab values passed in to the link component
+  const { invoiceId } = useParams()
+  let location = useLocation()
+  useEffect(() => {
+    if (location.pathname !== '/invoices/new') {
+      let viewingItem = state.invoices.find(
+        (item) => item.invoiceId == invoiceId
+      )
+      console.log(viewingItem)
+      setSubtotal(viewingItem.subtotal)
+      setInvoiceFrom(viewingItem.invoiceFrom)
+      setBillTo(viewingItem.billTo)
+      setDate(viewingItem.date)
+      setInvoiceNumber(viewingItem.invoiceNumber)
+      setImage(viewingItem.image)
+      setLineItems(JSON.parse(viewingItem.lineItems))
+    } else {
+      setSubtotal(state.subtotal)
+      setInvoiceFrom(state.invoiceFrom)
+      setBillTo(state.billTo)
+      setDate(state.date)
+      setInvoiceNumber(state.invoiceNumber)
+      setImage(state.image)
+      setLineItems(state.lineItems)
+    }
+  }, [invoiceId])
 
   const downloadInvoice = () => {
     let opt = {
@@ -80,19 +99,22 @@ export function InvoiceTemplate() {
                   </tr>
                 </thead>
                 <tbody>
-                  {lineItems.map((item, index) => {
-                    const { service, rate, quantity, lineItemTotal } = item
-                    return (
-                      <tr key={index}>
-                        <td>
-                          <span className="text-inverse">{service}</span>
-                        </td>
-                        <td className="text-center">${rate}</td>
-                        <td className="text-center">{quantity}</td>
-                        <td className="text-right">${lineItemTotal}</td>
-                      </tr>
-                    )
-                  })}
+                  {lineItems &&
+                    React.Children.toArray(
+                      lineItems.map((item) => {
+                        const { service, rate, quantity, lineItemTotal } = item
+                        return (
+                          <tr>
+                            <td>
+                              <span className="text-inverse">{service}</span>
+                            </td>
+                            <td className="text-center">${rate}</td>
+                            <td className="text-center">{quantity}</td>
+                            <td className="text-right">${lineItemTotal}</td>
+                          </tr>
+                        )
+                      })
+                    )}
                 </tbody>
               </table>
             </div>

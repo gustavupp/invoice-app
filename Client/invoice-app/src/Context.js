@@ -31,6 +31,10 @@ const AppProvider = ({ children }) => {
     setLineItemTotal(rate * quantity)
   }, [rate, quantity])
 
+  useEffect(() => {
+    getInvoices()
+  }, [])
+  console.log(state.invoices)
   const addLineItem = () => {
     if (state.isEditingLineItem) {
       let updatedItemList = state.lineItems.map((item) => {
@@ -108,9 +112,9 @@ const AppProvider = ({ children }) => {
       }
 
       try {
-        await fetch('http://localhost:3001/api/add-invoice', options).then(
-          (res) => console.log(res)
-        )
+        await fetch('http://localhost:3001/api/add-invoice', options)
+          .then((res) => console.log(res))
+          .then(() => getInvoices())
         // .then(() => {
         //   dispatch({ type: 'CLEAR_FIELDS' })
         //   setQuantity('')
