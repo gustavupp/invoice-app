@@ -21,7 +21,7 @@ export const NewInvoice = () => {
     setQuantity,
     setRate,
     billTo,
-    from,
+    invoiceFrom,
     date,
     invoiceNumber,
     postInvoiceToServer,
@@ -65,23 +65,23 @@ export const NewInvoice = () => {
         </p>
         <section className="row mb-3">
           <div className="form-group col-sm">
-            <label htmlFor="from">From</label>
+            <label htmlFor="invoiceFrom">From</label>
             <input
               type="text"
               className="form-control "
-              id="from"
-              name="from"
-              value={from}
+              id="invoiceFrom"
+              name="invoiceFrom"
+              value={invoiceFrom}
               onChange={(e) => addFields(e.target)}
               placeholder="Who is this invoice from?"
             />
           </div>
           <div className="form-group col-sm">
-            <label htmlFor="to">Bill To</label>
+            <label htmlFor="billTo">Bill To</label>
             <input
               type="text"
               className="form-control"
-              id="to"
+              id="billTo"
               name="billTo"
               value={billTo}
               onChange={(e) => addFields(e.target)}
@@ -218,7 +218,7 @@ export const NewInvoice = () => {
             data: {
               lineItems,
               subtotal,
-              from,
+              invoiceFrom,
               billTo,
               date,
               invoiceNumber,

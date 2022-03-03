@@ -22,11 +22,18 @@ db.getConnection((err, connection) => {
 
   //post request endpoint
   app.post('/api/add-invoice', (req, res) => {
-    const { from, to, invoiceNumber, date, subtotal, lineItems, image } =
-      req.body
+    const {
+      invoiceFrom,
+      billTo,
+      invoiceNumber,
+      date,
+      subtotal,
+      lineItems,
+      image,
+    } = req.body
     db.query(
-      'INSERT INTO invoices (billTo, invoiceFrom, items, date, total, invoiceNumber, image) VALUES (?, ? , ?, ?, ?, ?, ?)',
-      [to, from, lineItems, date, subtotal, invoiceNumber, image],
+      'INSERT INTO invoices (billTo, invoiceFrom, LineItems, date, subtotal, invoiceNumber, image) VALUES (?, ? , ?, ?, ?, ?, ?)',
+      [billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, image],
       (err, result) => {
         if (err) console.log(err)
         else {

@@ -44,7 +44,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         invoiceNumber: '',
-        from: '',
+        invoiceFrom: '',
         billTo: '',
         date: '',
         lineItems: [],

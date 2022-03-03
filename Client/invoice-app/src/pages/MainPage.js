@@ -38,21 +38,24 @@ const MainPage = () => {
                   const {
                     billTo,
                     invoiceFrom,
-                    items,
+                    lineItems,
                     image,
                     invoiceNumber,
-                    total,
+                    subtotal,
                     date,
+                    invoiceId,
                   } = item
                   return (
                     <tr>
                       <td className="text-center">#{invoiceNumber}</td>
                       <td className="text-center">{billTo}</td>
                       <td className="text-center">{invoiceFrom}</td>
-                      <td className="text-center">{total}</td>
+                      <td className="text-center">{subtotal}</td>
                       <td className="text-center">{date}</td>
                       <td className="text-center">
-                        <button className="btn btn-primary">View</button>
+                        <Link to={`/${invoiceId}`} className="btn btn-primary">
+                          View
+                        </Link>
                       </td>
                     </tr>
                   )

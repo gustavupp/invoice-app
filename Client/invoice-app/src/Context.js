@@ -8,7 +8,7 @@ const intialState = {
   invoiceNumber: '',
   lineItems: [],
   subtotal: 0,
-  from: '',
+  invoiceFrom: '',
   billTo: '',
   date: '',
   editingLineItemId: '',
@@ -84,13 +84,12 @@ const AppProvider = ({ children }) => {
   //sends invoice to server
   const postInvoiceToServer = async () => {
     if (
-      state.from &&
-      state.to &&
+      state.invoiceFrom &&
+      state.billTo &&
       state.invoiceNumber &&
       state.date &&
       state.subtotal
     ) {
-      console.log('hi')
       const options = {
         method: 'POST',
         headers: {
@@ -98,8 +97,8 @@ const AppProvider = ({ children }) => {
           'Content-Type': 'application/json;charset=UTF-8',
         },
         body: JSON.stringify({
-          from: state.from,
-          to: state.to,
+          invoiceFrom: state.invoiceFrom,
+          billTo: state.billTo,
           invoiceNumber: state.invoiceNumber,
           date: state.date,
           image: state.image,

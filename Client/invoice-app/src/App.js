@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/new-invoice" element={<NewInvoicePage />} />
-        <Route path="/invoice" element={<InvoiceTemplate />} />
+        <Route path="/:invoiceId" element={<InvoiceTemplate />} />
       </Routes>
       <Footer />
     </BrowserRouter>
