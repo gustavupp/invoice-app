@@ -37,23 +37,6 @@ export function InvoiceTemplate() {
       setInvoiceNumber(invoiceNumber)
       setImage(image)
       setLineItems(JSON.parse(lineItems))
-    } else {
-      let {
-        subtotal,
-        invoiceFrom,
-        billTo,
-        date,
-        invoiceNumber,
-        image,
-        lineItems,
-      } = invoices[invoices.length - 1]
-      setSubtotal(subtotal)
-      setInvoiceFrom(invoiceFrom)
-      setBillTo(billTo)
-      setDate(date)
-      setInvoiceNumber(invoiceNumber)
-      setImage(image)
-      setLineItems(JSON.parse(lineItems))
     }
   }, [invoiceId])
 
@@ -73,7 +56,11 @@ export function InvoiceTemplate() {
       <div className="col-md-12">
         <div className="invoice" ref={invoice}>
           <div className="invoice-company text-inverse f-w-600">
-            <img src={image} alt="logo" height="150px" />
+            {image ? (
+              <img src={image} alt="logo" height="150px" />
+            ) : (
+              invoiceFrom
+            )}
           </div>
 
           <div className="invoice-header">
@@ -182,7 +169,7 @@ export function InvoiceTemplate() {
         </div>
         <br />
         <div className="d-flex justify-content-between">
-          <Link to="/new-invoice" className="btn btn-success mx-2">
+          <Link to="/" className="btn btn-success mx-2">
             Back
           </Link>
           <button className="btn btn-primary mx-2" onClick={downloadInvoice}>

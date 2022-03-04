@@ -1,12 +1,12 @@
 import React, { useContext, useRef, useState, useEffect } from 'react'
 import { AppContext } from '../Context'
 import { AiOutlineClose, AiFillEdit } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 //import './styles/newInvoice.css'
 
 export const NewInvoice = () => {
-  const { getInvoices } = useContext(AppContext)
-
+  const { getInvoices, invoices, isEditingInvoice } = useContext(AppContext)
+  const { invoiceId } = useParams()
   const imageOutput = useRef(null)
 
   const [subtotal, setSubtotal] = useState(0)
@@ -16,12 +16,35 @@ export const NewInvoice = () => {
   const [date, setDate] = useState('')
   const [image, setImage] = useState('')
   const [lineItems, setLineItems] = useState([])
+
   const [lineItemTotal, setLineItemTotal] = useState(0)
   const [service, setService] = useState('')
   const [quantity, setQuantity] = useState('')
   const [rate, setRate] = useState('')
+
   const [editingLineItemId, setEditingLineItemId] = useState('')
   const [isEditingLineItem, setIsEditingLineItem] = useState(false)
+
+  useEffect(() => {
+    if (isEditingInvoice) {
+      let {
+        subtotal,
+        invoiceFrom,
+        billTo,
+        date,
+        invoiceNumber,
+        image,
+        lineItems,
+      } = invoices.find((item) => item.invoiceId == invoiceId)
+      setSubtotal(subtotal)
+      setInvoiceFrom(invoiceFrom)
+      setBillTo(billTo)
+      setDate(date)
+      setInvoiceNumber(invoiceNumber)
+      setImage(image)
+      setLineItems(JSON.parse(lineItems))
+    }
+  }, [invoiceId])
 
   useEffect(() => {
     let total = lineItems?.reduce((acc, cur) => {
@@ -293,12 +316,8 @@ export const NewInvoice = () => {
         <Link to="/" className="btn btn-success">
           Back
         </Link>
-        <Link
-          to="/invoices/new"
-          className="btn btn-success"
-          onClick={postInvoiceToServer}
-        >
-          Generate Invoice
+        <Link to="/" className="btn btn-success" onClick={postInvoiceToServer}>
+          Save
         </Link>
       </div>
     </main>

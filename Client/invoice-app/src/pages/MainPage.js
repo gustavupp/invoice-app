@@ -1,13 +1,19 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../Context'
 
 const MainPage = () => {
-  const { invoices, getInvoices } = useContext(AppContext)
+  const { invoices, getInvoices, setIsEditingInvoice } = useContext(AppContext)
+  const [globalTotal, setGlobalTotal] = useState(
+    invoices.reduce((acc, cur) => {
+      acc += cur.subtotal
+      return acc
+    }, 0)
+  )
 
-  useEffect(() => {
-    getInvoices()
-  }, [])
+  // useEffect(() => {
+  //   getInvoices()
+  // }, [invoices])
 
   return (
     <main className="container">
@@ -15,7 +21,7 @@ const MainPage = () => {
       <div className="card text-center d-flex" style={{ width: '120px' }}>
         <div className="card-header">TOTAL</div>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">$ 1222</li>
+          <li className="list-group-item">${globalTotal}</li>
         </ul>
       </div>
       <div className="table-responsive my-4">
@@ -27,7 +33,7 @@ const MainPage = () => {
               <th className="text-center">FROM</th>
               <th className="text-center">TOTAL</th>
               <th className="text-center">DATE</th>
-              <th className="text-center">VIEW</th>
+              <th className="text-center">VIEW/EDIT</th>
             </tr>
           </thead>
           <tbody>
@@ -38,8 +44,6 @@ const MainPage = () => {
                   const {
                     billTo,
                     invoiceFrom,
-                    lineItems,
-                    image,
                     invoiceNumber,
                     subtotal,
                     date,
@@ -55,9 +59,16 @@ const MainPage = () => {
                       <td className="text-center">
                         <Link
                           to={`/invoices/${invoiceId}`}
-                          className="btn btn-primary"
+                          className="btn btn-primary mr-1"
                         >
                           View
+                        </Link>
+                        <Link
+                          to={`/invoice/${invoiceId}`}
+                          className="btn btn-secondary"
+                          onClick={() => setIsEditingInvoice(true)}
+                        >
+                          Edit
                         </Link>
                       </td>
                     </tr>

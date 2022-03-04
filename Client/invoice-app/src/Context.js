@@ -5,6 +5,7 @@ const AppContext = React.createContext()
 
 const intialState = {
   invoices: [],
+  isEditingInvoice: false,
 }
 
 const AppProvider = ({ children }) => {
@@ -13,6 +14,10 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     getInvoices()
   }, [])
+
+  const setIsEditingInvoice = (trueOrFalse) => {
+    dispatch({ type: 'SET_IS_EDITING_INVOICE', payload: trueOrFalse })
+  }
 
   const getInvoices = async () => {
     try {
@@ -28,7 +33,7 @@ const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         ...state,
-
+        setIsEditingInvoice,
         getInvoices,
       }}
     >
