@@ -6,7 +6,7 @@ import { FaDownload } from 'react-icons/fa'
 import '../styles/invoiceTemplate.css'
 
 export function InvoiceTemplate() {
-  const state = useContext(AppContext)
+  const { invoices } = useContext(AppContext)
   const [subtotal, setSubtotal] = useState('')
   const [invoiceFrom, setInvoiceFrom] = useState('')
   const [billTo, setBillTo] = useState('')
@@ -18,27 +18,42 @@ export function InvoiceTemplate() {
   const invoice = useRef(null)
   const { invoiceId } = useParams()
   let location = useLocation()
+
   useEffect(() => {
     if (location.pathname !== '/invoices/new') {
-      let viewingItem = state.invoices.find(
-        (item) => item.invoiceId == invoiceId
-      )
-      console.log(viewingItem)
-      setSubtotal(viewingItem.subtotal)
-      setInvoiceFrom(viewingItem.invoiceFrom)
-      setBillTo(viewingItem.billTo)
-      setDate(viewingItem.date)
-      setInvoiceNumber(viewingItem.invoiceNumber)
-      setImage(viewingItem.image)
-      setLineItems(JSON.parse(viewingItem.lineItems))
+      let {
+        subtotal,
+        invoiceFrom,
+        billTo,
+        date,
+        invoiceNumber,
+        image,
+        lineItems,
+      } = invoices.find((item) => item.invoiceId == invoiceId)
+      setSubtotal(subtotal)
+      setInvoiceFrom(invoiceFrom)
+      setBillTo(billTo)
+      setDate(date)
+      setInvoiceNumber(invoiceNumber)
+      setImage(image)
+      setLineItems(JSON.parse(lineItems))
     } else {
-      setSubtotal(state.subtotal)
-      setInvoiceFrom(state.invoiceFrom)
-      setBillTo(state.billTo)
-      setDate(state.date)
-      setInvoiceNumber(state.invoiceNumber)
-      setImage(state.image)
-      setLineItems(state.lineItems)
+      let {
+        subtotal,
+        invoiceFrom,
+        billTo,
+        date,
+        invoiceNumber,
+        image,
+        lineItems,
+      } = invoices[invoices.length - 1]
+      setSubtotal(subtotal)
+      setInvoiceFrom(invoiceFrom)
+      setBillTo(billTo)
+      setDate(date)
+      setInvoiceNumber(invoiceNumber)
+      setImage(image)
+      setLineItems(JSON.parse(lineItems))
     }
   }, [invoiceId])
 

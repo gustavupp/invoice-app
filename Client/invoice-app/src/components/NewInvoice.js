@@ -1,40 +1,121 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useRef, useState, useEffect } from 'react'
 import { AppContext } from '../Context'
 import { AiOutlineClose, AiFillEdit } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 //import './styles/newInvoice.css'
 
 export const NewInvoice = () => {
-  const {
-    lineItems,
-    addLineItem,
-    subtotal,
-    addFields,
-    deleteLineItem,
-    editLineItem,
-    isEditingLineItem,
-    service,
-    quantity,
-    rate,
-    lineItemTotal,
-    setService,
-    setQuantity,
-    setRate,
-    billTo,
-    invoiceFrom,
-    date,
-    invoiceNumber,
-    postInvoiceToServer,
-    setImageFile,
-    image,
-  } = useContext(AppContext)
+  const { getInvoices } = useContext(AppContext)
 
   const imageOutput = useRef(null)
+
+  const [subtotal, setSubtotal] = useState(0)
+  const [invoiceNumber, setInvoiceNumber] = useState('')
+  const [invoiceFrom, setInvoiceFrom] = useState('')
+  const [billTo, setBillTo] = useState('')
+  const [date, setDate] = useState('')
+  const [image, setImage] = useState('')
+  const [lineItems, setLineItems] = useState([])
+  const [lineItemTotal, setLineItemTotal] = useState(0)
+  const [service, setService] = useState('')
+  const [quantity, setQuantity] = useState('')
+  const [rate, setRate] = useState('')
+  const [editingLineItemId, setEditingLineItemId] = useState('')
+  const [isEditingLineItem, setIsEditingLineItem] = useState(false)
+
+  useEffect(() => {
+    let total = lineItems?.reduce((acc, cur) => {
+      acc += cur.lineItemTotal
+      return acc
+    }, 0)
+    setSubtotal(total)
+  }, [lineItems])
+
+  const addLineItem = () => {
+    if (isEditingLineItem) {
+      let updatedItemList = lineItems.map((item) => {
+        if (item.id === editingLineItemId) {
+          item.service = service
+          item.rate = rate
+          item.quantity = quantity
+          item.lineItemTotal = lineItemTotal
+        }
+        return item
+      })
+      setLineItems(updatedItemList)
+    } else if (quantity && rate) {
+      let newItem = {
+        id: Date.now(),
+        service,
+        quantity,
+        rate,
+        lineItemTotal,
+      }
+      setLineItems([...lineItems, newItem])
+    }
+    //reset fields
+    setQuantity('')
+    setRate('')
+    setLineItemTotal(0)
+    setService('')
+  }
+
+  useEffect(() => {
+    setLineItemTotal(rate * quantity)
+  }, [rate, quantity])
+
+  const deleteLineItem = (e, id) => {
+    e.preventDefault()
+    let tempLineItems = lineItems.filter((item) => item.id !== id)
+    setLineItems(tempLineItems)
+  }
+
+  const editLineItem = (e, id) => {
+    e.preventDefault()
+    let editingLineItem = lineItems.find((item) => item.id === id)
+
+    setRate(editingLineItem.rate)
+    setQuantity(editingLineItem.quantity)
+    setService(editingLineItem.service)
+    setLineItemTotal(editingLineItem.lineItemTotal)
+    setEditingLineItemId(editingLineItem.id)
+    setIsEditingLineItem(true)
+  }
 
   const loadImageFile = (e) => {
     imageOutput.current.src = URL.createObjectURL(e.target.files[0])
     let image = URL.createObjectURL(e.target.files[0])
-    setImageFile(image)
+    setImage(image)
+  }
+
+  //sends invoice to server
+  const postInvoiceToServer = async () => {
+    if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
+      const options = {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8',
+        },
+        body: JSON.stringify({
+          invoiceFrom,
+          billTo,
+          invoiceNumber,
+          date,
+          image,
+          subtotal,
+          lineItems: JSON.stringify(lineItems),
+        }),
+      }
+
+      try {
+        await fetch('http://localhost:3001/api/add-invoice', options)
+          .then((res) => console.log(res))
+          .then(() => getInvoices())
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 
   return (
@@ -72,7 +153,7 @@ export const NewInvoice = () => {
               id="invoiceFrom"
               name="invoiceFrom"
               value={invoiceFrom}
-              onChange={(e) => addFields(e.target)}
+              onChange={(e) => setInvoiceFrom(e.target.value)}
               placeholder="Who is this invoice from?"
             />
           </div>
@@ -84,7 +165,7 @@ export const NewInvoice = () => {
               id="billTo"
               name="billTo"
               value={billTo}
-              onChange={(e) => addFields(e.target)}
+              onChange={(e) => setBillTo(e.target.value)}
               placeholder="Who is this invoice to?"
             />
           </div>
@@ -97,7 +178,7 @@ export const NewInvoice = () => {
                 id="number"
                 name="invoiceNumber"
                 value={invoiceNumber}
-                onChange={(e) => addFields(e.target)}
+                onChange={(e) => setInvoiceNumber(e.target.value)}
                 placeholder="#1"
               />
             </div>
@@ -109,7 +190,7 @@ export const NewInvoice = () => {
                 id="date"
                 name="date"
                 value={date}
-                onChange={(e) => addFields(e.target)}
+                onChange={(e) => setDate(e.target.value)}
               />
             </div>
           </div>
