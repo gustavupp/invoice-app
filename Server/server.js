@@ -20,6 +20,38 @@ db.getConnection((err, connection) => {
   if (err) throw err
   console.log('connected as id ' + connection.threadId)
 
+  //update request endpoint
+  app.put('/api/update-invoice', (req, res) => {
+    const {
+      billTo,
+      invoiceFrom,
+      lineItems,
+      date,
+      subtotal,
+      invoiceNumber,
+      image,
+      invoiceId,
+    } = req.body
+
+    db.query(
+      'UPDATE invoices SET billTo = ?, invoiceFrom = ?, lineItems = ?, date = ?, subtotal = ?, invoiceNumber = ?, image = ? WHERE invoiceId = ?',
+      [
+        billTo,
+        invoiceFrom,
+        lineItems,
+        date,
+        subtotal,
+        invoiceNumber,
+        image,
+        invoiceId,
+      ],
+      (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)
+      }
+    )
+  })
+
   //post request endpoint
   app.post('/api/add-invoice', (req, res) => {
     const {
@@ -32,7 +64,7 @@ db.getConnection((err, connection) => {
       image,
     } = req.body
     db.query(
-      'INSERT INTO invoices (billTo, invoiceFrom, LineItems, date, subtotal, invoiceNumber, image) VALUES (?, ? , ?, ?, ?, ?, ?)',
+      'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, image) VALUES (?, ? , ?, ?, ?, ?, ?)',
       [billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, image],
       (err, result) => {
         if (err) console.log(err)

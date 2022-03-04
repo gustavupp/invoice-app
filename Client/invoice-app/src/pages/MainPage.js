@@ -79,7 +79,12 @@ const MainPage = () => {
         </table>
       </div>
 
-      <Link to="/new-invoice" type="button" className="btn btn-primary">
+      <Link
+        to="/invoice/new"
+        type="button"
+        className="btn btn-primary"
+        onClick={() => setIsEditingInvoice(false)}
+      >
         New Invoice
       </Link>
     </main>

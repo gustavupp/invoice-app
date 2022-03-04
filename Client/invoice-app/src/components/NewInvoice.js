@@ -141,6 +141,36 @@ export const NewInvoice = () => {
     }
   }
 
+  const updateInvoice = async (id) => {
+    if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
+      const options = {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8',
+        },
+        body: JSON.stringify({
+          invoiceFrom,
+          billTo,
+          invoiceNumber,
+          date,
+          image,
+          subtotal,
+          lineItems: JSON.stringify(lineItems),
+          invoiceId,
+        }),
+      }
+
+      try {
+        await fetch('http://localhost:3001/api/update-invoice', options)
+          .then((res) => console.log(res))
+          .then(() => getInvoices())
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
   return (
     <main className="container my-5 py-3">
       <form>
@@ -316,7 +346,15 @@ export const NewInvoice = () => {
         <Link to="/" className="btn btn-success">
           Back
         </Link>
-        <Link to="/" className="btn btn-success" onClick={postInvoiceToServer}>
+        <Link
+          to="/"
+          className="btn btn-success"
+          onClick={
+            isEditingInvoice
+              ? () => updateInvoice(invoiceId)
+              : postInvoiceToServer
+          }
+        >
           Save
         </Link>
       </div>
