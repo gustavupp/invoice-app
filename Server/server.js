@@ -75,6 +75,19 @@ db.getConnection((err, connection) => {
     )
   })
 
+  //delete endpoint
+  app.delete('/api/delete/:invoiceId', (req, res) => {
+    const { invoiceId } = req.params
+    db.query(
+      'DELETE FROM invoices WHERE invoiceId = ?',
+      invoiceId,
+      (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)
+      }
+    )
+  })
+
   //get endpoint
   app.get('/api/get-invoices', (req, res) => {
     db.query('SELECT * FROM invoices', (err, result) => {

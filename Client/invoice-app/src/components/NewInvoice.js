@@ -81,6 +81,7 @@ export const NewInvoice = () => {
     setRate('')
     setLineItemTotal(0)
     setService('')
+    setIsEditingLineItem(false)
   }
 
   useEffect(() => {
@@ -141,7 +142,8 @@ export const NewInvoice = () => {
     }
   }
 
-  const updateInvoice = async (id) => {
+  //update invoice
+  const updateInvoice = async (invoiceId) => {
     if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
       const options = {
         method: 'PUT',
@@ -168,6 +170,17 @@ export const NewInvoice = () => {
       } catch (error) {
         console.log(error)
       }
+    }
+  }
+
+  //delete invoice
+  const deleteInvoice = async (invoiceId) => {
+    try {
+      await fetch(`http://localhost:3001/api/delete/${invoiceId}`, {
+        method: 'delete',
+      }).then(() => getInvoices())
+    } catch (error) {
+      throw error
     }
   }
 
@@ -346,6 +359,15 @@ export const NewInvoice = () => {
         <Link to="/" className="btn btn-success">
           Back
         </Link>
+
+        <Link
+          to="/"
+          className="btn btn-danger"
+          onClick={() => deleteInvoice(invoiceId)}
+        >
+          Delete
+        </Link>
+
         <Link
           to="/"
           className="btn btn-success"
