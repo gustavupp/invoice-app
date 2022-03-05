@@ -3,30 +3,72 @@ import { Link } from 'react-router-dom'
 import { AppContext } from '../Context'
 
 const MainPage = () => {
-  const { invoices, getInvoices, setIsEditingInvoice } = useContext(AppContext)
-  const [globalTotal, setGlobalTotal] = useState(
-    invoices.reduce((acc, cur) => {
-      acc += cur.subtotal
-      return acc
-    }, 0)
-  )
+  const { invoices, setIsEditingInvoice } = useContext(AppContext)
+  const [globalTotal, setGlobalTotal] = useState(0)
+  const [fiscalYearTotal, setFiscalYearTotal] = useState(0)
+  console.log(globalTotal)
 
-  // useEffect(() => {
-  //   getInvoices()
-  // }, [invoices])
+  useEffect(() => {
+    //global total setup
+    setGlobalTotal(
+      invoices.reduce((acc, cur) => {
+        acc += cur.subtotal
+        return acc
+      }, 0)
+    )
+
+    //fiscal year setup. filter the desired date range and them sum it
+    let fiscalYearRange = invoices.filter((item) => {
+      if (new Date().getMonth() + 1 <= 6) {
+        return (
+          item.date >= `${new Date().getFullYear() - 1}-07-01` &&
+          item.date <= `${new Date().getFullYear()}-06-30`
+        )
+      }
+      if (new Date().getMonth() + 1 > 6) {
+        return (
+          item.date >= `${new Date().getFullYear()}-07-01` &&
+          item.date <= `${new Date().getFullYear() + 1}-06-30`
+        )
+      }
+    })
+
+    setFiscalYearTotal(
+      fiscalYearRange.reduce((acc, cur) => {
+        acc += cur.subtotal
+        return acc
+      }, 0)
+    )
+  }, [invoices])
 
   return (
-    <main className="container">
-      <h1>Main Page</h1>
-      <div className="card text-center d-flex" style={{ width: '120px' }}>
-        <div className="card-header">TOTAL</div>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item">${globalTotal}</li>
-        </ul>
+    <main className="container my-5">
+      {/* ************TOTALS TABLE******** */}
+      <div className="table-responsive my-4 w-50">
+        <table className="table table-invoice">
+          <thead className="thead-light">
+            <tr>
+              <th className="text-center">GLOBAL TOTAL</th>
+              <th className="text-center">FISCAL YEAR TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="text-center">
+                <strong>${globalTotal}</strong>
+              </td>
+              <td className="text-center">
+                <strong>${fiscalYearTotal}</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
+      {/* ************INVOICES TABLE******** */}
       <div className="table-responsive my-4">
-        <table className="table table-invoice table-hover">
-          <thead className="thead-dark">
+        <table className="table table-invoice">
+          <thead className="thead-light">
             <tr>
               <th className="text-center">INVOICE</th>
               <th className="text-center">TO</th>
@@ -59,13 +101,13 @@ const MainPage = () => {
                       <td className="text-center">
                         <Link
                           to={`/invoices/${invoiceId}`}
-                          className="btn btn-primary mr-1"
+                          className="btn btn-primary mr-1 mb-1"
                         >
                           View
                         </Link>
                         <Link
                           to={`/invoice/${invoiceId}`}
-                          className="btn btn-secondary"
+                          className="btn btn-secondary mr-1 mb-1"
                           onClick={() => setIsEditingInvoice(true)}
                         >
                           Edit

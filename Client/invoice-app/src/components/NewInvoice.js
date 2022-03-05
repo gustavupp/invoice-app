@@ -54,6 +54,7 @@ export const NewInvoice = () => {
     setSubtotal(total)
   }, [lineItems])
 
+  //adds a line item
   const addLineItem = () => {
     if (isEditingLineItem) {
       let updatedItemList = lineItems.map((item) => {
@@ -88,12 +89,14 @@ export const NewInvoice = () => {
     setLineItemTotal(rate * quantity)
   }, [rate, quantity])
 
+  //deletes a line item
   const deleteLineItem = (e, id) => {
     e.preventDefault()
     let tempLineItems = lineItems.filter((item) => item.id !== id)
     setLineItems(tempLineItems)
   }
 
+  //edits a line item
   const editLineItem = (e, id) => {
     e.preventDefault()
     let editingLineItem = lineItems.find((item) => item.id === id)
@@ -106,13 +109,14 @@ export const NewInvoice = () => {
     setIsEditingLineItem(true)
   }
 
+  //loads image preview
   const loadImageFile = (e) => {
     imageOutput.current.src = URL.createObjectURL(e.target.files[0])
     let image = URL.createObjectURL(e.target.files[0])
     setImage(image)
   }
 
-  //sends invoice to server
+  //posts invoice to server
   const postInvoiceToServer = async () => {
     if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
       const options = {
@@ -142,7 +146,7 @@ export const NewInvoice = () => {
     }
   }
 
-  //update invoice
+  //updates invoice on db
   const updateInvoice = async (invoiceId) => {
     if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
       const options = {
@@ -173,7 +177,7 @@ export const NewInvoice = () => {
     }
   }
 
-  //delete invoice
+  //delete invoice from db
   const deleteInvoice = async (invoiceId) => {
     try {
       await fetch(`http://localhost:3001/api/delete/${invoiceId}`, {

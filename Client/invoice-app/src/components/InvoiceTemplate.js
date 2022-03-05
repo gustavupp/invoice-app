@@ -56,11 +56,7 @@ export function InvoiceTemplate() {
       <div className="col-md-12">
         <div className="invoice" ref={invoice}>
           <div className="invoice-company text-inverse f-w-600">
-            {image ? (
-              <img src={image} alt="logo" height="150px" />
-            ) : (
-              invoiceFrom
-            )}
+            {image ? <img src={image} alt="logo" height="150px" /> : null}
           </div>
 
           <div className="invoice-header">
@@ -101,22 +97,24 @@ export function InvoiceTemplate() {
                   </tr>
                 </thead>
                 <tbody>
-                  {lineItems &&
-                    React.Children.toArray(
-                      lineItems.map((item) => {
-                        const { service, rate, quantity, lineItemTotal } = item
-                        return (
-                          <tr>
-                            <td>
-                              <span className="text-inverse">{service}</span>
-                            </td>
-                            <td className="text-center">${rate}</td>
-                            <td className="text-center">{quantity}</td>
-                            <td className="text-right">${lineItemTotal}</td>
-                          </tr>
-                        )
-                      })
-                    )}
+                  {lineItems
+                    ? React.Children.toArray(
+                        lineItems.map((item) => {
+                          const { service, rate, quantity, lineItemTotal } =
+                            item
+                          return (
+                            <tr>
+                              <td>
+                                <span className="text-inverse">{service}</span>
+                              </td>
+                              <td className="text-center">${rate}</td>
+                              <td className="text-center">{quantity}</td>
+                              <td className="text-right">${lineItemTotal}</td>
+                            </tr>
+                          )
+                        })
+                      )
+                    : null}
                 </tbody>
               </table>
             </div>

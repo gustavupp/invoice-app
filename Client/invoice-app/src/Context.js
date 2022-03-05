@@ -19,6 +19,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: 'SET_IS_EDITING_INVOICE', payload: trueOrFalse })
   }
 
+  //get all invoices from db
   const getInvoices = async () => {
     try {
       const response = await fetch('http://localhost:3001/api/get-invoices')
