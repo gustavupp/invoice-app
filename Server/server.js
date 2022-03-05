@@ -1,21 +1,13 @@
 const express = require('express')
 const app = express()
-const mysql = require('mysql')
 const cors = require('cors')
+const db = require('./db')
 
+//middlewares
 app.use(cors())
 app.use(express.json())
 
-/****************************mysql connection*********************************/
-const db = mysql.createPool({
-  connectionLimit: 100,
-  user: 'root',
-  host: 'localhost',
-  password: 'password123*',
-  database: 'invoice-app',
-})
-/****************************mysql connection*********************************/
-
+//starts db connection
 db.getConnection((err, connection) => {
   if (err) throw err
   console.log('connected as id ' + connection.threadId)

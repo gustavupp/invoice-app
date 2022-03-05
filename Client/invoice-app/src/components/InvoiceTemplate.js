@@ -52,7 +52,7 @@ export function InvoiceTemplate() {
   }
 
   return (
-    <div className="container mt-5">
+    <div className="container my-5">
       <div className="col-md-12">
         <div className="invoice" ref={invoice}>
           <div className="invoice-company text-inverse f-w-600">
