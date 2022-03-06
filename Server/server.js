@@ -25,7 +25,7 @@ db.getConnection((err, connection) => {
       invoiceId,
     } = req.body
 
-    db.query(
+    connection.query(
       'UPDATE invoices SET billTo = ?, invoiceFrom = ?, lineItems = ?, date = ?, subtotal = ?, invoiceNumber = ?, image = ? WHERE invoiceId = ?',
       [
         billTo,
@@ -44,6 +44,12 @@ db.getConnection((err, connection) => {
     )
   })
 
+  connection.release()
+})
+
+db.getConnection((err, connection) => {
+  if (err) throw err
+  console.log('connected as id ' + connection.threadId)
   //post request endpoint
   app.post('/api/add-invoice', (req, res) => {
     const {
@@ -55,7 +61,7 @@ db.getConnection((err, connection) => {
       lineItems,
       image,
     } = req.body
-    db.query(
+    connection.query(
       'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, image) VALUES (?, ? , ?, ?, ?, ?, ?)',
       [billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, image],
       (err, result) => {
@@ -66,11 +72,17 @@ db.getConnection((err, connection) => {
       }
     )
   })
+  connection.release()
+})
+
+db.getConnection((err, connection) => {
+  if (err) throw err
+  console.log('connected as id ' + connection.threadId)
 
   //delete endpoint
   app.delete('/api/delete/:invoiceId', (req, res) => {
     const { invoiceId } = req.params
-    db.query(
+    connection.query(
       'DELETE FROM invoices WHERE invoiceId = ?',
       invoiceId,
       (err, result) => {
@@ -79,19 +91,26 @@ db.getConnection((err, connection) => {
       }
     )
   })
+  connection.release()
+})
+
+db.getConnection((err, connection) => {
+  if (err) throw err
+  console.log('connected as id ' + connection.threadId)
 
   //get endpoint
   app.get('/api/get-invoices', (req, res) => {
-    db.query('SELECT * FROM invoices', (err, result) => {
+    connection.query('SELECT * FROM invoices', (err, result) => {
       if (err) console.log(err)
       else res.send(result)
     })
   })
+  connection.release()
+})
 
-  //get endpoint
-  app.get('/', (req, res) => {
-    res.send('Server running!')
-  })
+//get endpoint server check
+app.get('/', (req, res) => {
+  res.send('Server running!')
 })
 
 //start listening
