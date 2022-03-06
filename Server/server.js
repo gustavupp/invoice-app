@@ -2,10 +2,25 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const db = require('./db')
+const multer = require('multer')
+const path = require('path')
 
-//middlewares
+/*********************MULTER CONFIG**********************/
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)) //renames the file with a unique name and appends the original file extension through the 'path' module
+  },
+})
+const upload = multer({ storage })
+//info: https://www.npmjs.com/package/multer
+/********************************************************/
+
+//other middlewares
 app.use(cors())
-app.use(express.json())
+//app.use(express.json())
 
 //starts db connection
 db.getConnection((err, connection) => {
@@ -51,7 +66,8 @@ db.getConnection((err, connection) => {
   if (err) throw err
   console.log('connected as id ' + connection.threadId)
   //post request endpoint
-  app.post('/api/add-invoice', (req, res) => {
+  app.post('/api/add-invoice', upload.single('image'), (req, res) => {
+    console.log({ body: req.body, file: req.file })
     const {
       invoiceFrom,
       billTo,
@@ -61,6 +77,7 @@ db.getConnection((err, connection) => {
       lineItems,
       image,
     } = req.body
+
     connection.query(
       'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, image) VALUES (?, ? , ?, ?, ?, ?, ?)',
       [billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, image],

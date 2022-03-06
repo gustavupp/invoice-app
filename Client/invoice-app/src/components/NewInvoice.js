@@ -111,29 +111,41 @@ export const NewInvoice = () => {
 
   //loads image preview
   const loadImageFile = (e) => {
+    console.log(e.target.files[0])
     imageOutput.current.src = URL.createObjectURL(e.target.files[0])
-    let image = URL.createObjectURL(e.target.files[0])
-    setImage(image)
+    //let image = URL.createObjectURL(e.target.files[0])
+    setImage(e.target.files[0])
   }
 
   //posts invoice to server
   const postInvoiceToServer = async () => {
     if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
+      let formData = new FormData()
+      formData.append('image', image)
+      formData.append('lineItems', JSON.stringify(lineItems))
+      formData.append('invoiceFrom', invoiceFrom)
+      formData.append('billTo', billTo)
+      formData.append('invoiceNumber', invoiceNumber)
+      formData.append('date', date)
+      formData.append('subtotal', subtotal)
+
       const options = {
         method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json;charset=UTF-8',
-        },
-        body: JSON.stringify({
-          invoiceFrom,
-          billTo,
-          invoiceNumber,
-          date,
-          image,
-          subtotal,
-          lineItems: JSON.stringify(lineItems),
-        }),
+        // headers: {
+        //   Accept: 'application/json',
+        //   'Content-Type': 'application/json;charset=UTF-8',
+        // },
+        body: formData,
+        //   body: JSON.stringify({
+        //     invoiceFrom,
+        //     billTo,
+        //     invoiceNumber,
+        //     date,
+        //     image,
+        //     subtotal,
+        //     lineItems: JSON.stringify(lineItems),
+        //     image,
+        //   }),
       }
 
       try {
@@ -152,8 +164,8 @@ export const NewInvoice = () => {
       const options = {
         method: 'PUT',
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json;charset=UTF-8',
+          Accept: 'multipart/form-data',
+          'Content-Type': 'multipart/form-data',
         },
         body: JSON.stringify({
           invoiceFrom,
@@ -205,7 +217,7 @@ export const NewInvoice = () => {
               onChange={loadImageFile}
             />
 
-            <label className="custom-file-label" htmlFor="file">
+            <label name="image" className="custom-file-label" htmlFor="file">
               Choose Logo Image
             </label>
           </div>
