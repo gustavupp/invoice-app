@@ -6,7 +6,6 @@ const MainPage = () => {
   const { invoices, setIsEditingInvoice } = useContext(AppContext)
   const [globalTotal, setGlobalTotal] = useState(0)
   const [fiscalYearTotal, setFiscalYearTotal] = useState(0)
-  console.log(globalTotal)
 
   useEffect(() => {
     //global total setup

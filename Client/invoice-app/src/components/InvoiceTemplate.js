@@ -56,7 +56,13 @@ export function InvoiceTemplate() {
       <div className="col-md-12">
         <div className="invoice" ref={invoice}>
           <div className="invoice-company text-inverse f-w-600">
-            {image ? <img src={image} alt="logo" height="150px" /> : null}
+            {image ? (
+              <img
+                src={`http://localhost:3001/${image}`}
+                alt="logo"
+                height="150px"
+              />
+            ) : null}
           </div>
 
           <div className="invoice-header">

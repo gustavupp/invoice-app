@@ -20,6 +20,7 @@ const upload = multer({ storage })
 
 //other middlewares
 app.use(cors())
+app.use('/uploads', express.static('./uploads'))
 //app.use(express.json())
 
 //starts db connection
@@ -28,7 +29,8 @@ db.getConnection((err, connection) => {
   console.log('connected as id ' + connection.threadId)
 
   //update request endpoint
-  app.put('/api/update-invoice', (req, res) => {
+  app.put('/api/update-invoice', upload.single('image'), (req, res) => {
+    console.log({ file: req.file, body: req.body })
     const {
       billTo,
       invoiceFrom,
@@ -36,9 +38,9 @@ db.getConnection((err, connection) => {
       date,
       subtotal,
       invoiceNumber,
-      image,
       invoiceId,
     } = req.body
+    const image = req.file.path
 
     connection.query(
       'UPDATE invoices SET billTo = ?, invoiceFrom = ?, lineItems = ?, date = ?, subtotal = ?, invoiceNumber = ?, image = ? WHERE invoiceId = ?',
@@ -65,7 +67,9 @@ db.getConnection((err, connection) => {
 db.getConnection((err, connection) => {
   if (err) throw err
   console.log('connected as id ' + connection.threadId)
+
   //post request endpoint
+  //middleware is passed as a second argument to app.post
   app.post('/api/add-invoice', upload.single('image'), (req, res) => {
     console.log({ body: req.body, file: req.file })
     const {
@@ -75,12 +79,21 @@ db.getConnection((err, connection) => {
       date,
       subtotal,
       lineItems,
-      image,
+      userId,
     } = req.body
-
+    const image = req.file.path
     connection.query(
-      'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, image) VALUES (?, ? , ?, ?, ?, ?, ?)',
-      [billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, image],
+      'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, userId, image) VALUES (?, ? , ?, ?, ?, ?, ?, ?)',
+      [
+        billTo,
+        invoiceFrom,
+        lineItems,
+        date,
+        subtotal,
+        invoiceNumber,
+        userId,
+        image,
+      ],
       (err, result) => {
         if (err) console.log(err)
         else {

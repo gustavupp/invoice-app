@@ -128,26 +128,13 @@ export const NewInvoice = () => {
       formData.append('invoiceNumber', invoiceNumber)
       formData.append('date', date)
       formData.append('subtotal', subtotal)
+      formData.append('userId', '001') //manually adding userId
 
       const options = {
         method: 'POST',
-        // headers: {
-        //   Accept: 'application/json',
-        //   'Content-Type': 'application/json;charset=UTF-8',
-        // },
         body: formData,
-        //   body: JSON.stringify({
-        //     invoiceFrom,
-        //     billTo,
-        //     invoiceNumber,
-        //     date,
-        //     image,
-        //     subtotal,
-        //     lineItems: JSON.stringify(lineItems),
-        //     image,
-        //   }),
       }
-
+      console.log(formData)
       try {
         await fetch('http://localhost:3001/api/add-invoice', options)
           .then((res) => console.log(res))
@@ -161,22 +148,20 @@ export const NewInvoice = () => {
   //updates invoice on db
   const updateInvoice = async (invoiceId) => {
     if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
+      let formData = new FormData()
+      formData.append('image', image)
+      formData.append('lineItems', JSON.stringify(lineItems))
+      formData.append('invoiceFrom', invoiceFrom)
+      formData.append('billTo', billTo)
+      formData.append('invoiceNumber', invoiceNumber)
+      formData.append('date', date)
+      formData.append('subtotal', subtotal)
+      formData.append('invoiceId', invoiceId)
+      //formData.append('userId', '001')
+
       const options = {
         method: 'PUT',
-        headers: {
-          Accept: 'multipart/form-data',
-          'Content-Type': 'multipart/form-data',
-        },
-        body: JSON.stringify({
-          invoiceFrom,
-          billTo,
-          invoiceNumber,
-          date,
-          image,
-          subtotal,
-          lineItems: JSON.stringify(lineItems),
-          invoiceId,
-        }),
+        body: formData,
       }
 
       try {
