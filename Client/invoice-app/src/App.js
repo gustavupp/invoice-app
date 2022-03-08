@@ -13,23 +13,15 @@ import { AppContext } from './Context'
 function App() {
   const { addUserToContext, getInvoices } = useContext(AppContext)
   //auth0 stuff
-  const {
-    loginWithRedirect,
-    isAuthenticated,
-    logout,
-    user: { email = '', sub: userId = '' } = {},
-  } = useAuth0()
+  const { user: { email = '', sub: userId = '' } = {} } = useAuth0()
 
   //chech the database for the user id, if not in the database, add the user.
   useEffect(() => {
-    console.log('inside app useEffect')
     if (userId) {
       checkIfUserExists(userId).then((data) => {
-        console.log({ dataLength: data.length })
         if (data.length === 0) addUserToDb(email, userId)
         else {
-          console.log('inside else statment')
-          addUserToContext(userId)
+          //addUserToContext(userId)
           getInvoices(userId)
         }
       })

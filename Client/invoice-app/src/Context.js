@@ -1,25 +1,18 @@
 import React, { useReducer, useEffect } from 'react'
 import { reducer } from './reducer'
-import { useAuth0 } from '@auth0/auth0-react'
 const AppContext = React.createContext()
 
 const intialState = {
   invoices: [],
   isEditingInvoice: false,
-  userId: '',
+  userId: '', //NOT BEING USED!!!!
 }
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState)
-  //auth0 stuff
-  //const { isAuthenticated, user: { sub: userId = '' } = {} } = useAuth0()
-
-  // useEffect(() => {
-  //   getInvoices()
-  // }, [])
 
   const addUserToContext = (id) => {
-    dispatch({ type: 'ADD_USER_ID', payload: id })
+    dispatch({ type: 'ADD_USER_ID', payload: id }) //NOT BEING USED !!!!!!
   }
 
   const setIsEditingInvoice = (trueOrFalse) => {
@@ -28,7 +21,6 @@ const AppProvider = ({ children }) => {
 
   //get all invoices from db
   const getInvoices = async (userId) => {
-    console.log({ 'getInvoices was called, userId is:': userId })
     if (userId) {
       try {
         const response = await fetch(

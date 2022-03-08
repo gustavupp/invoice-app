@@ -7,7 +7,7 @@ export const reducer = (state, action) => {
       return { ...state, isEditingInvoice: action.payload }
 
     case 'ADD_USER_ID':
-      return { ...state, userId: action.payload }
+      return { ...state, userId: action.payload } //NOT BEING USED!!!!!!
 
     default:
       return state

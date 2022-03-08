@@ -1,7 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const Navbar = () => {
+  //auth0 stuff
+  const {
+    logout,
+    loginWithRedirect,
+    loginWithPopup,
+    isAuthenticated,
+    user: { picture = '', email = '', sub: userId = '' } = {},
+  } = useAuth0()
+
+  console.log({ isAuthenticated, picture, email, userId })
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <Link to="/" className="navbar-brand">
@@ -34,6 +46,15 @@ const Navbar = () => {
             <Link to="/settings" className="nav-link">
               Settings
             </Link>
+          </li>
+          <li className="nav-item">
+            <a
+              className="nav-link"
+              style={{ cursor: 'pointer' }}
+              onClick={isAuthenticated ? logout : loginWithRedirect}
+            >
+              {isAuthenticated ? 'Logout' : 'Login'}
+            </a>
           </li>
         </ul>
       </div>
