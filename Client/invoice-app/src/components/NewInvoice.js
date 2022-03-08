@@ -14,9 +14,11 @@ export const NewInvoice = () => {
   const [invoiceFrom, setInvoiceFrom] = useState('')
   const [billTo, setBillTo] = useState('')
   const [date, setDate] = useState('')
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState(null)
   const [lineItems, setLineItems] = useState([])
-  const [imageThumbnail, setImageThumbnail] = useState('')
+  const [imageThumbnail, setImageThumbnail] = useState(
+    'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010'
+  )
 
   const [lineItemTotal, setLineItemTotal] = useState(0)
   const [service, setService] = useState('')
@@ -218,6 +220,7 @@ export const NewInvoice = () => {
                 ? `http://localhost:3001/${image}`
                 : imageThumbnail
             }
+            alt="No image has been selected."
             width="200"
             ref={imageOutput}
           />
