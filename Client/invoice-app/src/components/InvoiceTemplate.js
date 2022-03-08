@@ -14,6 +14,8 @@ export function InvoiceTemplate() {
   const [invoiceNumber, setInvoiceNumber] = useState('')
   const [image, setImage] = useState('')
   const [lineItems, setLineItems] = useState('')
+  const [paymentDetails, setPaymentDetails] = useState('')
+  const [notes, setNotes] = useState('')
 
   const invoice = useRef(null)
   const { invoiceId } = useParams()
@@ -29,6 +31,8 @@ export function InvoiceTemplate() {
         invoiceNumber,
         image,
         lineItems,
+        paymentDetails,
+        notes,
       } = invoices.find((item) => item.invoiceId == invoiceId)
       setSubtotal(subtotal)
       setInvoiceFrom(invoiceFrom)
@@ -37,6 +41,8 @@ export function InvoiceTemplate() {
       setInvoiceNumber(invoiceNumber)
       setImage(image)
       setLineItems(JSON.parse(lineItems))
+      setPaymentDetails(paymentDetails)
+      setNotes(notes)
     }
   }, [invoiceId])
 
@@ -148,18 +154,8 @@ export function InvoiceTemplate() {
             </div>
           </div>
           <div>
-            <p>
-              <strong>PAYMENT DETAILS:</strong>
-            </p>
-            <strong>WESTPAC</strong>
-            <br />
-            <strong>BSB:</strong> 734-013
-            <br /> <strong>Account:</strong> 700201 <br />
-            <strong>Name:</strong> {invoiceFrom}
-            <hr />
-            <strong>ABN: </strong> 56445110251
-            <br />
-            <strong>Address: </strong> 417B Kessels Road, Robertson QLD
+            <pre>{paymentDetails}</pre>
+            <pre>{notes}</pre>
           </div>
           <hr />
           <div>
@@ -167,7 +163,7 @@ export function InvoiceTemplate() {
               <strong>THANK YOU {billTo}!</strong>
             </p>
             <p className="text-center">
-              <FiPhoneCall /> 0490 532 668 | <FiMail /> xgustavux@hotmail.com
+              <FiPhoneCall /> 0000000000 | <FiMail /> xgustavux@hotmail.com
             </p>
           </div>
         </div>

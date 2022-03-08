@@ -5,6 +5,8 @@ const db = require('./db')
 const multer = require('multer')
 const path = require('path')
 const e = require('express')
+const { connect } = require('http2')
+const { application } = require('express')
 
 /*********************MULTER CONFIG**********************/
 const storage = multer.diskStorage({
@@ -22,14 +24,60 @@ const upload = multer({ storage })
 //other middlewares
 app.use(cors())
 app.use('/uploads', express.static('./uploads'))
-//app.use(express.json())
 
 //starts db connection
 db.getConnection((err, connection) => {
   if (err) throw err
   console.log('connected as id ' + connection.threadId)
 
-  //update request endpoint
+  app.get('/api/user/:userId', (req, res) => {
+    console.log({ 'req-line-34': req.params })
+    const { userId } = req.params
+
+    connection.query(
+      'SELECT * FROM users WHERE userId = ?',
+      userId,
+      (err, result) => {
+        if (err) console.log(err)
+        else {
+          res.send(result)
+        }
+      }
+    )
+  })
+  connection.release()
+})
+
+//starts db connection
+db.getConnection((err, connection) => {
+  if (err) throw err
+  console.log('connected as id ' + connection.threadId)
+
+  //user json middleware on this unique route
+  app.post('/api/add-user', express.json(), (req, res) => {
+    console.log({ 'req-line-58': req.body })
+    const { email, userId } = req.body
+
+    connection.query(
+      'INSERT INTO users (userId, email) VALUES (?, ?)',
+      [userId, email],
+      (err, result) => {
+        if (err) console.log(err)
+        else {
+          res.send(result)
+        }
+      }
+    )
+  })
+  connection.release()
+})
+
+//starts db connection
+db.getConnection((err, connection) => {
+  if (err) throw err
+  console.log('connected as id ' + connection.threadId)
+
+  //update invoices table endpoint
   app.put('/api/update-invoice', upload.single('image'), (req, res) => {
     console.log({ file: req.file, body: req.body })
     //if there is a req.file
@@ -162,7 +210,7 @@ db.getConnection((err, connection) => {
       } = req.body
 
       connection.query(
-        'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, userId, paymentDetails, notes) VALUES (?, ? , ?, ?, ?, ?, ?)',
+        'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, userId, paymentDetails, notes) VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?)',
         [
           billTo,
           invoiceFrom,
@@ -210,11 +258,17 @@ db.getConnection((err, connection) => {
   console.log('connected as id ' + connection.threadId)
 
   //get endpoint
-  app.get('/api/get-invoices', (req, res) => {
-    connection.query('SELECT * FROM invoices', (err, result) => {
-      if (err) console.log(err)
-      else res.send(result)
-    })
+  app.get('/api/get-invoices/:userId', (req, res) => {
+    console.log('req-params-line-262', req.params)
+    const { userId } = req.params
+    connection.query(
+      'SELECT * FROM invoices WHERE userId = ?',
+      userId,
+      (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)
+      }
+    )
   })
   connection.release()
 })

@@ -94,7 +94,7 @@ const MainPage = () => {
                       <td className="text-center">#{invoiceNumber}</td>
                       <td className="text-center">{billTo}</td>
                       <td className="text-center">{invoiceFrom}</td>
-                      <td className="text-center">{subtotal}</td>
+                      <td className="text-center">${subtotal}</td>
                       <td className="text-center">{date}</td>
                       <td className="text-center">
                         <Link

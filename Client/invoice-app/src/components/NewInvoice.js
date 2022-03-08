@@ -2,9 +2,14 @@ import React, { useContext, useRef, useState, useEffect } from 'react'
 import { AppContext } from '../Context'
 import { AiOutlineClose, AiFillEdit } from 'react-icons/ai'
 import { Link, useParams } from 'react-router-dom'
-//import './styles/newInvoice.css'
+import { useAuth0 } from '@auth0/auth0-react'
 
 export const NewInvoice = () => {
+  //auth0 stuff. Grab userId from auth0
+  const {
+    user: { sub: userId },
+  } = useAuth0()
+
   const { getInvoices, invoices, isEditingInvoice } = useContext(AppContext)
   const { invoiceId } = useParams()
   const imageOutput = useRef(null)
@@ -120,10 +125,8 @@ export const NewInvoice = () => {
 
   //loads image preview
   const loadImageFile = (e) => {
-    //imageOutput.current.src = URL.createObjectURL(e.target.files[0])
     setImageThumbnail(URL.createObjectURL(e.target.files[0]))
     setImage(e.target.files[0])
-    //setImage(URL.createObjectURL(e.target.files[0]))
   }
 
   //posts invoice to server
@@ -139,7 +142,7 @@ export const NewInvoice = () => {
       formData.append('subtotal', subtotal)
       formData.append('paymentDetails', paymentDetails)
       formData.append('notes', notes)
-      formData.append('userId', '002') //manually adding userId
+      formData.append('userId', userId)
 
       const options = {
         method: 'POST',
@@ -149,7 +152,7 @@ export const NewInvoice = () => {
       try {
         await fetch('http://localhost:3001/api/add-invoice', options)
           .then((res) => console.log(res))
-          .then(() => getInvoices())
+          .then(() => getInvoices(userId))
       } catch (error) {
         console.log(error)
       }
@@ -170,7 +173,7 @@ export const NewInvoice = () => {
       formData.append('invoiceId', invoiceId)
       formData.append('paymentDetails', paymentDetails)
       formData.append('notes', notes)
-      //formData.append('userId', '001')
+      //formData.append('userId', userId)
 
       const options = {
         method: 'PUT',
@@ -180,7 +183,7 @@ export const NewInvoice = () => {
       try {
         await fetch('http://localhost:3001/api/update-invoice', options)
           .then((res) => console.log(res))
-          .then(() => getInvoices())
+          .then(() => getInvoices(userId))
       } catch (error) {
         console.log(error)
       }
@@ -192,7 +195,7 @@ export const NewInvoice = () => {
     try {
       await fetch(`http://localhost:3001/api/delete/${invoiceId}`, {
         method: 'delete',
-      }).then(() => getInvoices())
+      }).then(() => getInvoices(userId))
     } catch (error) {
       throw error
     }
@@ -381,7 +384,8 @@ export const NewInvoice = () => {
               className="form-control"
               id="paymentDetails"
               name="paymentDetails"
-              value={paymentDetails}
+              rows="4"
+              value={paymentDetails ? paymentDetails : ''} //when empty its value comes back as null from the db and react complains. had to add this ternary to fix that.
               onChange={(e) => setPaymentDetails(e.target.value)}
               placeholder="Any payment details?"
             />
@@ -394,7 +398,8 @@ export const NewInvoice = () => {
                 className="form-control"
                 name="notes"
                 id="notes"
-                value={notes}
+                rows="4"
+                value={notes ? notes : ''} //when empty its value comes back as null from the db and react complains. had to add this ternary to fix that.
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Any notes?"
               />
