@@ -9,10 +9,8 @@ const Navbar = () => {
     loginWithRedirect,
     loginWithPopup,
     isAuthenticated,
-    user: { picture = '', email = '', sub: userId = '' } = {},
+    user: { picture = '', email = '', sub: userId = '', nickname = '' } = {},
   } = useAuth0()
-
-  console.log({ isAuthenticated, picture, email, userId })
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -32,22 +30,22 @@ const Navbar = () => {
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav">
-          <li className="nav-item active">
+          <li className="mr-1 nav-item active">
             <Link to="/" className="nav-link">
               Dashboard <span className="sr-only">(current)</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="mr-1 nav-item">
             <Link to="/about" className="nav-link">
               About
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="mr-1 nav-item">
             <Link to="/settings" className="nav-link">
               Settings
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="mr-1 nav-item">
             <a
               className="nav-link"
               style={{ cursor: 'pointer' }}
@@ -57,6 +55,17 @@ const Navbar = () => {
             </a>
           </li>
         </ul>
+        {isAuthenticated ? (
+          <div className="text-white d-flex">
+            <p>Welcome {nickname} !</p>
+            <img
+              src={picture}
+              alt="profile photo"
+              width="50px"
+              style={{ borderRadius: '50%', margin: '0 15px' }}
+            />
+          </div>
+        ) : null}
       </div>
     </nav>
   )
