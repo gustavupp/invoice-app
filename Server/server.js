@@ -42,11 +42,13 @@ db.getConnection((err, connection) => {
         subtotal,
         invoiceNumber,
         invoiceId,
+        paymentDetails,
+        notes,
       } = req.body
       const image = req.file.path
 
       connection.query(
-        'UPDATE invoices SET billTo = ?, invoiceFrom = ?, lineItems = ?, date = ?, subtotal = ?, invoiceNumber = ?, image = ? WHERE invoiceId = ?',
+        'UPDATE invoices SET billTo = ?, invoiceFrom = ?, lineItems = ?, date = ?, subtotal = ?, invoiceNumber = ?, image = ? paymentDetails = ?, notes = ? WHERE invoiceId = ?',
         [
           billTo,
           invoiceFrom,
@@ -55,6 +57,8 @@ db.getConnection((err, connection) => {
           subtotal,
           invoiceNumber,
           image,
+          paymentDetails,
+          notes,
           invoiceId,
         ],
         (err, result) => {
@@ -72,10 +76,12 @@ db.getConnection((err, connection) => {
         subtotal,
         invoiceNumber,
         invoiceId,
+        paymentDetails,
+        notes,
       } = req.body
 
       connection.query(
-        'UPDATE invoices SET billTo = ?, invoiceFrom = ?, lineItems = ?, date = ?, subtotal = ?, invoiceNumber = ? WHERE invoiceId = ?',
+        'UPDATE invoices SET billTo = ?, invoiceFrom = ?, lineItems = ?, date = ?, subtotal = ?, invoiceNumber = ?, paymentDetails = ?, notes = ? WHERE invoiceId = ?',
         [
           billTo,
           invoiceFrom,
@@ -83,6 +89,8 @@ db.getConnection((err, connection) => {
           date,
           subtotal,
           invoiceNumber,
+          paymentDetails,
+          notes,
           invoiceId,
         ],
         (err, result) => {
@@ -114,10 +122,12 @@ db.getConnection((err, connection) => {
         subtotal,
         lineItems,
         userId,
+        paymentDetails,
+        notes,
       } = req.body
       const image = req.file.path
       connection.query(
-        'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, userId, image) VALUES (?, ? , ?, ?, ?, ?, ?, ?)',
+        'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, userId, image, paymentDetails, notes) VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)',
         [
           billTo,
           invoiceFrom,
@@ -127,6 +137,8 @@ db.getConnection((err, connection) => {
           invoiceNumber,
           userId,
           image,
+          paymentDetails,
+          notes,
         ],
         (err, result) => {
           if (err) console.log(err)
@@ -145,11 +157,23 @@ db.getConnection((err, connection) => {
         subtotal,
         lineItems,
         userId,
+        paymentDetails,
+        notes,
       } = req.body
 
       connection.query(
-        'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, userId) VALUES (?, ? , ?, ?, ?, ?, ?)',
-        [billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, userId],
+        'INSERT INTO invoices (billTo, invoiceFrom, lineItems, date, subtotal, invoiceNumber, userId, paymentDetails, notes) VALUES (?, ? , ?, ?, ?, ?, ?)',
+        [
+          billTo,
+          invoiceFrom,
+          lineItems,
+          date,
+          subtotal,
+          invoiceNumber,
+          userId,
+          paymentDetails,
+          notes,
+        ],
         (err, result) => {
           if (err) console.log(err)
           else {

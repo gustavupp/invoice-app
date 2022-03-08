@@ -17,8 +17,10 @@ export const NewInvoice = () => {
   const [image, setImage] = useState(null)
   const [lineItems, setLineItems] = useState([])
   const [imageThumbnail, setImageThumbnail] = useState(
-    'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010'
+    'https://socialimpact.com/wp-content/uploads/2021/03/logo-placeholder-300x210.jpg'
   )
+  const [paymentDetails, setPaymentDetails] = useState('')
+  const [notes, setNotes] = useState('')
 
   const [lineItemTotal, setLineItemTotal] = useState(0)
   const [service, setService] = useState('')
@@ -38,6 +40,8 @@ export const NewInvoice = () => {
         invoiceNumber,
         image,
         lineItems,
+        paymentDetails,
+        notes,
       } = invoices.find((item) => item.invoiceId === parseInt(invoiceId))
       setSubtotal(subtotal)
       setInvoiceFrom(invoiceFrom)
@@ -46,6 +50,8 @@ export const NewInvoice = () => {
       setInvoiceNumber(invoiceNumber)
       setImage(image)
       setLineItems(JSON.parse(lineItems))
+      setPaymentDetails(paymentDetails)
+      setNotes(notes)
     }
   }, [invoiceId])
 
@@ -131,6 +137,8 @@ export const NewInvoice = () => {
       formData.append('invoiceNumber', invoiceNumber)
       formData.append('date', date)
       formData.append('subtotal', subtotal)
+      formData.append('paymentDetails', paymentDetails)
+      formData.append('notes', notes)
       formData.append('userId', '002') //manually adding userId
 
       const options = {
@@ -160,6 +168,8 @@ export const NewInvoice = () => {
       formData.append('date', date)
       formData.append('subtotal', subtotal)
       formData.append('invoiceId', invoiceId)
+      formData.append('paymentDetails', paymentDetails)
+      formData.append('notes', notes)
       //formData.append('userId', '001')
 
       const options = {
@@ -363,6 +373,34 @@ export const NewInvoice = () => {
             {isEditingLineItem ? 'Save' : '+ Item'}
           </button>
         }
+
+        <section className="row my-4">
+          <div className="form-group col-sm">
+            <label htmlFor="paymentDetails">Payment Details</label>
+            <textarea
+              className="form-control"
+              id="paymentDetails"
+              name="paymentDetails"
+              value={paymentDetails}
+              onChange={(e) => setPaymentDetails(e.target.value)}
+              placeholder="Any payment details?"
+            />
+          </div>
+
+          <div className="col-sm">
+            <div className="form-group">
+              <label htmlFor="notes">Notes</label>
+              <textarea
+                className="form-control"
+                name="notes"
+                id="notes"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Any notes?"
+              />
+            </div>
+          </div>
+        </section>
       </form>
 
       <div className="d-flex justify-content-end m-2">
