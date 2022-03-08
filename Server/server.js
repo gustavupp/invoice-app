@@ -96,7 +96,7 @@ db.getConnection((err, connection) => {
       const image = req.file.path
 
       connection.query(
-        'UPDATE invoices SET billTo = ?, invoiceFrom = ?, lineItems = ?, date = ?, subtotal = ?, invoiceNumber = ?, image = ? paymentDetails = ?, notes = ? WHERE invoiceId = ?',
+        'UPDATE invoices SET billTo = ?, invoiceFrom = ?, lineItems = ?, date = ?, subtotal = ?, invoiceNumber = ?, image = ?, paymentDetails = ?, notes = ? WHERE invoiceId = ?',
         [
           billTo,
           invoiceFrom,
