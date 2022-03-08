@@ -16,6 +16,7 @@ export const NewInvoice = () => {
   const [date, setDate] = useState('')
   const [image, setImage] = useState('')
   const [lineItems, setLineItems] = useState([])
+  const [imageThumbnail, setImageThumbnail] = useState('')
 
   const [lineItemTotal, setLineItemTotal] = useState(0)
   const [service, setService] = useState('')
@@ -35,7 +36,7 @@ export const NewInvoice = () => {
         invoiceNumber,
         image,
         lineItems,
-      } = invoices.find((item) => item.invoiceId == invoiceId)
+      } = invoices.find((item) => item.invoiceId === parseInt(invoiceId))
       setSubtotal(subtotal)
       setInvoiceFrom(invoiceFrom)
       setBillTo(billTo)
@@ -111,10 +112,10 @@ export const NewInvoice = () => {
 
   //loads image preview
   const loadImageFile = (e) => {
-    console.log(e.target.files[0])
-    imageOutput.current.src = URL.createObjectURL(e.target.files[0])
-    //let image = URL.createObjectURL(e.target.files[0])
+    //imageOutput.current.src = URL.createObjectURL(e.target.files[0])
+    setImageThumbnail(URL.createObjectURL(e.target.files[0]))
     setImage(e.target.files[0])
+    //setImage(URL.createObjectURL(e.target.files[0]))
   }
 
   //posts invoice to server
@@ -128,13 +129,13 @@ export const NewInvoice = () => {
       formData.append('invoiceNumber', invoiceNumber)
       formData.append('date', date)
       formData.append('subtotal', subtotal)
-      formData.append('userId', '001') //manually adding userId
+      formData.append('userId', '002') //manually adding userId
 
       const options = {
         method: 'POST',
         body: formData,
       }
-      console.log(formData)
+
       try {
         await fetch('http://localhost:3001/api/add-invoice', options)
           .then((res) => console.log(res))
@@ -209,7 +210,17 @@ export const NewInvoice = () => {
         </div>
 
         <p>
-          <img id="output" width="200" ref={imageOutput} />
+          <img
+            id="output"
+            //if image variable is coming from db its value is a string(a path)
+            src={
+              typeof image === 'string'
+                ? `http://localhost:3001/${image}`
+                : imageThumbnail
+            }
+            width="200"
+            ref={imageOutput}
+          />
         </p>
         <section className="row mb-3">
           <div className="form-group col-sm">

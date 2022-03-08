@@ -16,15 +16,14 @@ const MainPage = () => {
       }, 0)
     )
 
-    //fiscal year setup. filter the desired date range and them sum it
+    //fiscal year setup. filter the desired date range and them add it
     let fiscalYearRange = invoices.filter((item) => {
       if (new Date().getMonth() + 1 <= 6) {
         return (
           item.date >= `${new Date().getFullYear() - 1}-07-01` &&
           item.date <= `${new Date().getFullYear()}-06-30`
         )
-      }
-      if (new Date().getMonth() + 1 > 6) {
+      } else {
         return (
           item.date >= `${new Date().getFullYear()}-07-01` &&
           item.date <= `${new Date().getFullYear() + 1}-06-30`
