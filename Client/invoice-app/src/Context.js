@@ -5,14 +5,14 @@ const AppContext = React.createContext()
 const intialState = {
   invoices: [],
   isEditingInvoice: false,
-  userId: '', //NOT BEING USED!!!!
+  userData: [],
 }
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState)
 
-  const addUserToContext = (id) => {
-    dispatch({ type: 'ADD_USER_ID', payload: id }) //NOT BEING USED !!!!!!
+  const addUserToContext = (userData) => {
+    dispatch({ type: 'ADD_USER', payload: userData })
   }
 
   const setIsEditingInvoice = (trueOrFalse) => {
@@ -34,6 +34,17 @@ const AppProvider = ({ children }) => {
     }
   }
 
+  //get user info from db
+  const getUserFromDb = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/user/${userId}`)
+      const data = await response.json()
+      dispatch({ type: 'ADD_USER_INFO', payload: data })
+    } catch (error) {
+      throw error
+    }
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -41,6 +52,7 @@ const AppProvider = ({ children }) => {
         setIsEditingInvoice,
         getInvoices,
         addUserToContext,
+        getUserFromDb,
       }}
     >
       {children}

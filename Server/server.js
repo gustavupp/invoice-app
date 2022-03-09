@@ -77,6 +77,29 @@ db.getConnection((err, connection) => {
   if (err) throw err
   console.log('connected as id ' + connection.threadId)
 
+  //user json middleware on this unique route
+  app.put('/api/user/update', express.json(), (req, res) => {
+    const { userId, userMobile, userPaymentDetails, userNotes } = req.body
+
+    connection.query(
+      'UPDATE users SET mobile = ?, paymentDetails = ?, notes = ? WHERE userId = ?',
+      [userMobile, userPaymentDetails, userNotes, userId],
+      (err, result) => {
+        if (err) console.log(err)
+        else {
+          res.send(result)
+        }
+      }
+    )
+  })
+  connection.release()
+})
+
+//starts db connection
+db.getConnection((err, connection) => {
+  if (err) throw err
+  console.log('connected as id ' + connection.threadId)
+
   //update invoices table endpoint
   app.put('/api/update-invoice', upload.single('image'), (req, res) => {
     console.log({ file: req.file, body: req.body })

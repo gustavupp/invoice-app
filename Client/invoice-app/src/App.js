@@ -19,10 +19,12 @@ function App() {
   useEffect(() => {
     if (userId) {
       checkIfUserExists(userId).then((data) => {
-        if (data.length === 0) addUserToDb(email, userId)
+        if (data.length === 0)
+          addUserToDb(email, userId).then(() => getInvoices(userId))
         else {
-          //addUserToContext(userId)
           getInvoices(userId)
+          console.log(data)
+          addUserToContext(data)
         }
       })
     }
@@ -43,15 +45,20 @@ function App() {
         options
       )
       const data = await response.json()
+      console.log(data)
     } catch (error) {
       throw error
     }
   }
 
   const checkIfUserExists = async (userId) => {
-    const response = await fetch(`http://localhost:3001/api/user/${userId}`)
-    const data = await response.json()
-    return data
+    try {
+      const response = await fetch(`http://localhost:3001/api/user/${userId}`)
+      const data = await response.json()
+      return data
+    } catch (error) {
+      throw error
+    }
   }
 
   return (
