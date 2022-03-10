@@ -149,25 +149,27 @@ export const NewInvoice = () => {
   return (
     <main className="container my-5 py-3">
       <form>
-        <div className="input-group mb-3">
-          <div className="input-group-prepend">
-            <span className="input-group-text">Upload</span>
-          </div>
-          <div className="custom-file">
-            <input
-              type="file"
-              accept="image/*"
-              name="image"
-              className="custom-file-input"
-              id="file"
-              onChange={loadImageFile}
-            />
+        <section className=" row mb-3">
+          <div className="input-group col-sm-12 col-md-8">
+            <div className="input-group-prepend">
+              <span className="input-group-text">Upload</span>
+            </div>
+            <div className="custom-file">
+              <input
+                type="file"
+                accept="image/*"
+                name="image"
+                className="custom-file-input"
+                id="file"
+                onChange={loadImageFile}
+              />
 
-            <label name="image" className="custom-file-label" htmlFor="file">
-              Choose Logo Image
-            </label>
+              <label name="image" className="custom-file-label" htmlFor="file">
+                Choose Logo Image
+              </label>
+            </div>
           </div>
-        </div>
+        </section>
 
         <p>
           <img
@@ -183,8 +185,9 @@ export const NewInvoice = () => {
             ref={imageOutput}
           />
         </p>
+
         <section className="row mb-3">
-          <div className="form-group col-sm">
+          <div className="form-group col-sm-12 col-md-5">
             <label htmlFor="invoiceFrom">From</label>
             <input
               type="text"
@@ -196,7 +199,7 @@ export const NewInvoice = () => {
               placeholder="Who is this invoice from?"
             />
           </div>
-          <div className="form-group col-sm">
+          <div className="form-group col-sm-12 col-md-5">
             <label htmlFor="billTo">Bill To</label>
             <input
               type="text"
@@ -208,9 +211,9 @@ export const NewInvoice = () => {
               placeholder="Who is this invoice to?"
             />
           </div>
-          <div className="col-sm">
+          <div className="col-sm-12 col-md-2">
             <div className="form-group">
-              <label htmlFor="number">Invoice Number</label>
+              <label htmlFor="number">Invoice Nº</label>
               <input
                 type="number"
                 className="form-control"
@@ -221,6 +224,11 @@ export const NewInvoice = () => {
                 placeholder="#1"
               />
             </div>
+          </div>
+        </section>
+
+        <section className="row mb-3">
+          <div className="col-sm-12 col-md-4">
             <div className="form-group">
               <label htmlFor="date">Date</label>
               <input
