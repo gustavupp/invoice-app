@@ -7,10 +7,10 @@ export const reducer = (state, action) => {
       return { ...state, isEditingInvoice: action.payload }
 
     case 'ADD_USER':
-      return { ...state, userData: action.payload }
+      return { ...state, userInfo: action.payload }
 
     case 'ADD_USER_INFO':
-      return { ...state, userData: action.payload }
+      return { ...state, userInfo: action.payload }
 
     default:
       return state

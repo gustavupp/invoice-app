@@ -14,7 +14,9 @@ export const NewInvoice = () => {
     postInvoiceToServer,
     updateInvoice,
     deleteInvoice,
+    userInfo: [{ notes: userNotes, paymentDetails: userPaymentDetails }],
   } = useContext(AppContext)
+
   const { invoiceId } = useParams()
   const imageOutput = useRef(null)
 
@@ -39,6 +41,7 @@ export const NewInvoice = () => {
   const [editingLineItemId, setEditingLineItemId] = useState('')
   const [isEditingLineItem, setIsEditingLineItem] = useState(false)
 
+  //when component loadeds and the invoices array is not empty, look for the given id in the array and populate the fields
   useEffect(() => {
     if (invoiceId && invoices.length > 0) {
       let {
@@ -63,6 +66,14 @@ export const NewInvoice = () => {
       setNotes(notes)
     }
   }, [invoiceId, invoices])
+
+  //populate notes and details fields with user info
+  useEffect(() => {
+    if (!invoiceId) {
+      setPaymentDetails(userPaymentDetails)
+      setNotes(userNotes)
+    }
+  }, [])
 
   //updates current total
   useEffect(() => {

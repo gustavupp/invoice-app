@@ -4,7 +4,7 @@ import { AppContext } from '../Context'
 
 const UserInfo = () => {
   const {
-    userData: [
+    userInfo: [
       {
         email = '',
         mobile = '',
@@ -14,7 +14,7 @@ const UserInfo = () => {
         userId = '',
       } = {},
     ],
-    getUserFromDb,
+    updateUserSettings,
   } = useContext(AppContext)
 
   const [id, setId] = useState(userId)
@@ -34,33 +34,6 @@ const UserInfo = () => {
       setUserNotes(notes)
     }
   }, [email, userId])
-
-  const updateUserSettings = async () => {
-    const options = {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      body: JSON.stringify({
-        userId,
-        userMobile,
-        userPaymentDetails,
-        userNotes,
-      }),
-    }
-
-    try {
-      const response = await fetch(
-        'http://localhost:3001/api/user/update',
-        options
-      )
-      const data = await response.json()
-      console.log(data)
-    } catch (error) {
-      throw error
-    }
-  }
 
   return (
     <main className="container my-5 py-3">
@@ -163,7 +136,12 @@ const UserInfo = () => {
           to="/"
           className="btn btn-success"
           onClick={() => {
-            updateUserSettings().then(() => getUserFromDb(userId))
+            updateUserSettings(
+              userId,
+              userMobile,
+              userPaymentDetails,
+              userNotes
+            )
           }}
         >
           Save

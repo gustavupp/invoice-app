@@ -1,11 +1,11 @@
-import React, { useReducer, useEffect } from 'react'
+import React, { useReducer } from 'react'
 import { reducer } from './reducer'
 const AppContext = React.createContext()
 
 const intialState = {
   invoices: [],
   isEditingInvoice: false,
-  userData: [],
+  userInfo: [],
 }
 
 const AppProvider = ({ children }) => {
@@ -188,6 +188,39 @@ const AppProvider = ({ children }) => {
     }
   }
 
+  const updateUserSettings = async (
+    userId,
+    userMobile,
+    userPaymentDetails,
+    userNotes
+  ) => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      body: JSON.stringify({
+        userId,
+        userMobile,
+        userPaymentDetails,
+        userNotes,
+      }),
+    }
+
+    try {
+      const response = await fetch(
+        'http://localhost:3001/api/user/update',
+        options
+      )
+      const data = await response.json()
+      console.log(data)
+      getUserFromDb(userId)
+    } catch (error) {
+      throw error
+    }
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -201,6 +234,7 @@ const AppProvider = ({ children }) => {
         postInvoiceToServer,
         updateInvoice,
         deleteInvoice,
+        updateUserSettings,
       }}
     >
       {children}

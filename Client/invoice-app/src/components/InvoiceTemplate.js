@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useEffect, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { AppContext } from '../Context'
 import { FiPhoneCall, FiMail } from 'react-icons/fi'
 import { FaDownload } from 'react-icons/fa'
@@ -8,7 +8,7 @@ import '../styles/invoiceTemplate.css'
 export function InvoiceTemplate() {
   const {
     invoices,
-    userData: [{ email = '', mobile = '' } = {}],
+    userInfo: [{ email = '', mobile = '' } = {}],
   } = useContext(AppContext)
   const [subtotal, setSubtotal] = useState('')
   const [invoiceFrom, setInvoiceFrom] = useState('')
@@ -22,10 +22,10 @@ export function InvoiceTemplate() {
 
   const invoice = useRef(null)
   const { invoiceId } = useParams()
-  let location = useLocation()
 
+  //when component loadeds and the invoices array is not empty, look for the given id in the array and populate the fields
   useEffect(() => {
-    if (location.pathname !== '/invoices/new' && invoices.length > 0) {
+    if (invoiceId && invoices.length > 0) {
       let {
         subtotal,
         invoiceFrom,
@@ -47,7 +47,7 @@ export function InvoiceTemplate() {
       setPaymentDetails(paymentDetails)
       setNotes(notes)
     }
-  }, [invoiceId])
+  }, [invoiceId, invoices])
 
   const downloadInvoice = () => {
     let opt = {
