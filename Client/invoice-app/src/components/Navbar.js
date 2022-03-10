@@ -40,11 +40,13 @@ const Navbar = () => {
               About
             </Link>
           </li>
-          <li className="mr-1 nav-item">
-            <Link to="/settings" className="nav-link">
-              Settings
-            </Link>
-          </li>
+          {isAuthenticated ? (
+            <li className="mr-1 nav-item">
+              <Link to="/settings" className="nav-link">
+                Settings
+              </Link>
+            </li>
+          ) : null}
           <li className="mr-1 nav-item">
             <a
               className="nav-link"

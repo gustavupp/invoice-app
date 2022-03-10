@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../Context'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const MainPage = () => {
   const { invoices, setIsEditingInvoice } = useContext(AppContext)
   const [globalTotal, setGlobalTotal] = useState(0)
   const [fiscalYearTotal, setFiscalYearTotal] = useState(0)
+  //auth0 stuff
+  const { isAuthenticated, loginWithRedirect } = useAuth0()
 
   useEffect(() => {
     //global total setup
@@ -39,6 +42,16 @@ const MainPage = () => {
     )
   }, [invoices])
 
+  if (!isAuthenticated) {
+    return (
+      <div className="container my-5 text-center">
+        <h2>Click the button to Login or Signup</h2>
+        <button className="btn btn-primary" onClick={loginWithRedirect}>
+          Login
+        </button>
+      </div>
+    )
+  }
   return (
     <main className="container my-5">
       {/* ************TOTALS TABLE******** */}

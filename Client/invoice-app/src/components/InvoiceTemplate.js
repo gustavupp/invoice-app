@@ -6,7 +6,10 @@ import { FaDownload } from 'react-icons/fa'
 import '../styles/invoiceTemplate.css'
 
 export function InvoiceTemplate() {
-  const { invoices } = useContext(AppContext)
+  const {
+    invoices,
+    userData: [{ email = '', mobile = '' } = {}],
+  } = useContext(AppContext)
   const [subtotal, setSubtotal] = useState('')
   const [invoiceFrom, setInvoiceFrom] = useState('')
   const [billTo, setBillTo] = useState('')
@@ -22,7 +25,7 @@ export function InvoiceTemplate() {
   let location = useLocation()
 
   useEffect(() => {
-    if (location.pathname !== '/invoices/new') {
+    if (location.pathname !== '/invoices/new' && invoices.length > 0) {
       let {
         subtotal,
         invoiceFrom,
@@ -163,7 +166,7 @@ export function InvoiceTemplate() {
               <strong>THANK YOU {billTo}!</strong>
             </p>
             <p className="text-center">
-              <FiPhoneCall /> 0000000000 | <FiMail /> xgustavux@hotmail.com
+              <FiPhoneCall /> {mobile} | <FiMail /> {email}
             </p>
           </div>
         </div>

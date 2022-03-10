@@ -11,7 +11,8 @@ import { useEffect, useContext } from 'react'
 import { AppContext } from './Context'
 
 function App() {
-  const { addUserToContext, getInvoices } = useContext(AppContext)
+  const { addUserToContext, getInvoices, checkIfUserExists, addUserToDb } =
+    useContext(AppContext)
   //auth0 stuff
   const { user: { email = '', sub: userId = '' } = {} } = useAuth0()
 
@@ -23,43 +24,11 @@ function App() {
           addUserToDb(email, userId).then(() => getInvoices(userId))
         else {
           getInvoices(userId)
-          console.log(data)
           addUserToContext(data)
         }
       })
     }
   }, [userId, email])
-
-  const addUserToDb = async (email, userId) => {
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      body: JSON.stringify({ email, userId }),
-    }
-    try {
-      const response = await fetch(
-        'http://localhost:3001/api/add-user',
-        options
-      )
-      const data = await response.json()
-      console.log(data)
-    } catch (error) {
-      throw error
-    }
-  }
-
-  const checkIfUserExists = async (userId) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/user/${userId}`)
-      const data = await response.json()
-      return data
-    } catch (error) {
-      throw error
-    }
-  }
 
   return (
     <BrowserRouter>
@@ -67,6 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/invoice/:invoiceId" element={<NewInvoicePage />} />
+        <Route path="/invoice/new" element={<NewInvoicePage />} />
         <Route path="/invoices/:invoiceId" element={<InvoiceTemplate />} />
         <Route path="/settings" element={<UserSettingsPage />} />
         <Route path="/about" element={<AboutPage />} />

@@ -12,7 +12,7 @@ const UserInfo = () => {
         paymentDetails = '',
         signUpDate = '',
         userId = '',
-      },
+      } = {},
     ],
     getUserFromDb,
   } = useContext(AppContext)
@@ -23,6 +23,17 @@ const UserInfo = () => {
   const [userSignUpDate, setUserSignUpDate] = useState(signUpDate)
   const [userPaymentDetails, setUserPaymentDetails] = useState(paymentDetails)
   const [userNotes, setUserNotes] = useState(notes)
+
+  useEffect(() => {
+    if (email && userId) {
+      setId(userId)
+      setUserEmail(email)
+      setUserMobile(mobile)
+      setUserSignUpDate(signUpDate)
+      setUserPaymentDetails(paymentDetails)
+      setUserNotes(notes)
+    }
+  }, [email, userId])
 
   const updateUserSettings = async () => {
     const options = {

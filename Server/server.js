@@ -31,7 +31,6 @@ db.getConnection((err, connection) => {
   console.log('connected as id ' + connection.threadId)
 
   app.get('/api/user/:userId', (req, res) => {
-    console.log({ 'req-line-34': req.params })
     const { userId } = req.params
 
     connection.query(
@@ -75,7 +74,6 @@ db.getConnection((err, connection) => {
 //starts db connection
 db.getConnection((err, connection) => {
   if (err) throw err
-  console.log('connected as id ' + connection.threadId)
 
   //user json middleware on this unique route
   app.put('/api/user/update', express.json(), (req, res) => {

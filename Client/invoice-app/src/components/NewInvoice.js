@@ -6,11 +6,15 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 export const NewInvoice = () => {
   //auth0 stuff. Grab userId from auth0
-  const {
-    user: { sub: userId },
-  } = useAuth0()
+  const { user: { sub: userId } = {} } = useAuth0()
 
-  const { getInvoices, invoices, isEditingInvoice } = useContext(AppContext)
+  const {
+    invoices,
+    isEditingInvoice,
+    postInvoiceToServer,
+    updateInvoice,
+    deleteInvoice,
+  } = useContext(AppContext)
   const { invoiceId } = useParams()
   const imageOutput = useRef(null)
 
@@ -36,7 +40,7 @@ export const NewInvoice = () => {
   const [isEditingLineItem, setIsEditingLineItem] = useState(false)
 
   useEffect(() => {
-    if (isEditingInvoice) {
+    if (invoiceId && invoices.length > 0) {
       let {
         subtotal,
         invoiceFrom,
@@ -58,8 +62,9 @@ export const NewInvoice = () => {
       setPaymentDetails(paymentDetails)
       setNotes(notes)
     }
-  }, [invoiceId])
+  }, [invoiceId, invoices])
 
+  //updates current total
   useEffect(() => {
     let total = lineItems?.reduce((acc, cur) => {
       acc += cur.lineItemTotal
@@ -67,6 +72,11 @@ export const NewInvoice = () => {
     }, 0)
     setSubtotal(total)
   }, [lineItems])
+
+  //updates line item total
+  useEffect(() => {
+    setLineItemTotal(rate * quantity)
+  }, [rate, quantity])
 
   //adds a line item
   const addLineItem = () => {
@@ -99,10 +109,6 @@ export const NewInvoice = () => {
     setIsEditingLineItem(false)
   }
 
-  useEffect(() => {
-    setLineItemTotal(rate * quantity)
-  }, [rate, quantity])
-
   //deletes a line item
   const deleteLineItem = (e, id) => {
     e.preventDefault()
@@ -127,78 +133,6 @@ export const NewInvoice = () => {
   const loadImageFile = (e) => {
     setImageThumbnail(URL.createObjectURL(e.target.files[0]))
     setImage(e.target.files[0])
-  }
-
-  //posts invoice to server
-  const postInvoiceToServer = async () => {
-    if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
-      let formData = new FormData()
-      formData.append('image', image)
-      formData.append('lineItems', JSON.stringify(lineItems))
-      formData.append('invoiceFrom', invoiceFrom)
-      formData.append('billTo', billTo)
-      formData.append('invoiceNumber', invoiceNumber)
-      formData.append('date', date)
-      formData.append('subtotal', subtotal)
-      formData.append('paymentDetails', paymentDetails)
-      formData.append('notes', notes)
-      formData.append('userId', userId)
-
-      const options = {
-        method: 'POST',
-        body: formData,
-      }
-
-      try {
-        await fetch('http://localhost:3001/api/add-invoice', options)
-          .then((res) => console.log(res))
-          .then(() => getInvoices(userId))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
-
-  //updates invoice on db
-  const updateInvoice = async (invoiceId) => {
-    if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
-      let formData = new FormData()
-      formData.append('image', image)
-      formData.append('lineItems', JSON.stringify(lineItems))
-      formData.append('invoiceFrom', invoiceFrom)
-      formData.append('billTo', billTo)
-      formData.append('invoiceNumber', invoiceNumber)
-      formData.append('date', date)
-      formData.append('subtotal', subtotal)
-      formData.append('invoiceId', invoiceId)
-      formData.append('paymentDetails', paymentDetails)
-      formData.append('notes', notes)
-      //formData.append('userId', userId)
-
-      const options = {
-        method: 'PUT',
-        body: formData,
-      }
-
-      try {
-        await fetch('http://localhost:3001/api/update-invoice', options)
-          .then((res) => console.log(res))
-          .then(() => getInvoices(userId))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
-
-  //delete invoice from db
-  const deleteInvoice = async (invoiceId) => {
-    try {
-      await fetch(`http://localhost:3001/api/delete/${invoiceId}`, {
-        method: 'delete',
-      }).then(() => getInvoices(userId))
-    } catch (error) {
-      throw error
-    }
   }
 
   return (
@@ -421,7 +355,7 @@ export const NewInvoice = () => {
         <Link
           to="/"
           className="btn btn-danger"
-          onClick={() => deleteInvoice(invoiceId)}
+          onClick={() => deleteInvoice(invoiceId, userId)}
         >
           Delete
         </Link>
@@ -431,8 +365,33 @@ export const NewInvoice = () => {
           className="btn btn-success"
           onClick={
             isEditingInvoice
-              ? () => updateInvoice(invoiceId)
-              : postInvoiceToServer
+              ? () =>
+                  updateInvoice(
+                    userId,
+                    invoiceId,
+                    invoiceFrom,
+                    billTo,
+                    invoiceNumber,
+                    date,
+                    subtotal,
+                    image,
+                    lineItems,
+                    paymentDetails,
+                    notes
+                  )
+              : () =>
+                  postInvoiceToServer(
+                    invoiceFrom,
+                    billTo,
+                    invoiceNumber,
+                    date,
+                    subtotal,
+                    image,
+                    lineItems,
+                    paymentDetails,
+                    notes,
+                    userId
+                  )
           }
         >
           Save
