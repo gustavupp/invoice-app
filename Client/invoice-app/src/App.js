@@ -9,10 +9,12 @@ import UserSettingsPage from './pages/UserSettingsPage'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useEffect, useContext } from 'react'
 import { AppContext } from './Context'
+import PrivateRoute from './pages/PrivateRoute'
 
 function App() {
   const { addUserToContext, getInvoices, checkIfUserExists, addUserToDb } =
     useContext(AppContext)
+
   //auth0 stuff
   const { user: { email = '', sub: userId = '' } = {} } = useAuth0()
 
@@ -34,7 +36,15 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <MainPage />
+            </PrivateRoute>
+          }
+        />
+
         <Route path="/invoice/:invoiceId" element={<NewInvoicePage />} />
         <Route path="/invoice/new" element={<NewInvoicePage />} />
         <Route path="/invoices/:invoiceId" element={<InvoiceTemplate />} />

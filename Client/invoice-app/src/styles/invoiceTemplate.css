@@ -46,10 +46,9 @@
 .invoice-price .invoice-price-left,
 .invoice-price .invoice-price-right {
   display: table-cell;
-  padding: 20px;
+  padding: 20px 5px;
   font-size: 20px;
   font-weight: 600;
-  width: 75%;
   position: relative;
   vertical-align: middle;
 }

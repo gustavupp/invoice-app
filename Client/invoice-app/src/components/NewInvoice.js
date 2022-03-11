@@ -1,12 +1,13 @@
 import React, { useContext, useRef, useState, useEffect } from 'react'
 import { AppContext } from '../Context'
 import { AiOutlineClose, AiFillEdit } from 'react-icons/ai'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 
 export const NewInvoice = () => {
   //auth0 stuff. Grab userId from auth0
   const { user: { sub: userId } = {} } = useAuth0()
+  let navigate = useNavigate()
 
   const {
     invoices,
@@ -144,6 +145,37 @@ export const NewInvoice = () => {
   const loadImageFile = (e) => {
     setImageThumbnail(URL.createObjectURL(e.target.files[0]))
     setImage(e.target.files[0])
+  }
+
+  const handleCreateOrSave = () => {
+    if (isEditingInvoice) {
+      updateInvoice(
+        userId,
+        invoiceId,
+        invoiceFrom,
+        billTo,
+        invoiceNumber,
+        date,
+        subtotal,
+        image,
+        lineItems,
+        paymentDetails,
+        notes
+      ).then(() => navigate('/'))
+    } else {
+      postInvoiceToServer(
+        invoiceFrom,
+        billTo,
+        invoiceNumber,
+        date,
+        subtotal,
+        image,
+        lineItems,
+        paymentDetails,
+        notes,
+        userId
+      ).then(() => navigate('/'))
+    }
   }
 
   return (
@@ -367,7 +399,7 @@ export const NewInvoice = () => {
       </div>
 
       <div className="d-flex justify-content-between m-2">
-        <Link to="/" className="btn btn-success">
+        <Link to="/" className="btn btn-primary">
           Back
         </Link>
 
@@ -379,42 +411,9 @@ export const NewInvoice = () => {
           Delete
         </Link>
 
-        <Link
-          to="/"
-          className="btn btn-success"
-          onClick={
-            isEditingInvoice
-              ? () =>
-                  updateInvoice(
-                    userId,
-                    invoiceId,
-                    invoiceFrom,
-                    billTo,
-                    invoiceNumber,
-                    date,
-                    subtotal,
-                    image,
-                    lineItems,
-                    paymentDetails,
-                    notes
-                  )
-              : () =>
-                  postInvoiceToServer(
-                    invoiceFrom,
-                    billTo,
-                    invoiceNumber,
-                    date,
-                    subtotal,
-                    image,
-                    lineItems,
-                    paymentDetails,
-                    notes,
-                    userId
-                  )
-          }
-        >
-          Save
-        </Link>
+        <button className="btn btn-success" onClick={handleCreateOrSave}>
+          {isEditingInvoice ? 'Save Invoice' : 'Create Invoice'}
+        </button>
       </div>
     </main>
   )
