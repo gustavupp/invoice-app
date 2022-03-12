@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const db = require('./db')
+const db = require('./db/db')
 const multer = require('multer')
 const path = require('path')
 const e = require('express')
@@ -17,6 +17,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname)) //renames the file with a unique name and appends the original file extension through the 'path' module
   },
 })
+
 const upload = multer({ storage })
 //info: https://www.npmjs.com/package/multer
 /********************************************************/
@@ -280,7 +281,6 @@ db.getConnection((err, connection) => {
 
   //get endpoint
   app.get('/api/get-invoices/:userId', (req, res) => {
-    console.log('req-params-line-262', req.params)
     const { userId } = req.params
     connection.query(
       'SELECT * FROM invoices WHERE userId = ?',

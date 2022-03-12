@@ -40,7 +40,7 @@ const MainPage = () => {
   }, [invoices])
 
   return (
-    <main className="container my-5">
+    <main style={{ minHeight: '70vh' }} className="container my-5">
       {/* ************TOTALS TABLE******** */}
       <div
         style={{ borderRadius: '10px' }}
