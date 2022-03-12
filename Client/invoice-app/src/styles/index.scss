@@ -1,4 +1,9 @@
-* {
+:root {
+  --dark: #343a40;
+  --darkBackground: #25292c;
+}
+
+#343A40 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -7,5 +12,5 @@
 }
 
 body {
-  background: white;
+  background: var(--darkBackground);
 }

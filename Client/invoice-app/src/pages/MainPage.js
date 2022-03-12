@@ -42,14 +42,21 @@ const MainPage = () => {
   return (
     <main className="container my-5">
       {/* ************TOTALS TABLE******** */}
-      <div className="table-responsive my-4 w-75">
-        <table className="table table-invoice">
+      <div
+        style={{ borderRadius: '10px' }}
+        className="table-responsive my-4 w-75"
+      >
+        <table
+          style={{ borderRadius: '10px' }}
+          className="table table-invoice table-dark"
+        >
           <thead className="thead-dark">
             <tr>
               <th className="text-center">GLOBAL TOTAL</th>
               <th className="text-center">FISCAL YEAR TOTAL</th>
             </tr>
           </thead>
+
           <tbody>
             <tr>
               <td className="text-center">
@@ -64,8 +71,11 @@ const MainPage = () => {
       </div>
 
       {/* ************INVOICES TABLE******** */}
-      <div className="table-responsive my-4">
-        <table className="table table-invoice">
+      <div style={{ borderRadius: '10px' }} className="table-responsive my-4">
+        <table
+          style={{ borderRadius: '10px' }}
+          className="table table-invoice table-dark"
+        >
           <thead className="thead-dark">
             <tr>
               <th className="text-center">INVOICE</th>
@@ -122,7 +132,7 @@ const MainPage = () => {
       <Link
         to="/invoice/new"
         type="button"
-        className="btn btn-primary"
+        className="btn btn-success"
         onClick={() => setIsEditingInvoice(false)}
       >
         New Invoice

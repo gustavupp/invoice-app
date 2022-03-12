@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AppContext } from '../Context'
 
 const UserInfo = () => {
+  const navigate = useNavigate()
   const {
     userInfo: [
       {
@@ -132,8 +133,7 @@ const UserInfo = () => {
         <Link to="/" className="btn btn-primary">
           Back
         </Link>
-        <Link
-          to="/"
+        <button
           className="btn btn-success"
           onClick={() => {
             updateUserSettings(
@@ -141,11 +141,11 @@ const UserInfo = () => {
               userMobile,
               userPaymentDetails,
               userNotes
-            )
+            ).then(() => navigate('/'))
           }}
         >
           Save
-        </Link>
+        </button>
       </div>
     </main>
   )

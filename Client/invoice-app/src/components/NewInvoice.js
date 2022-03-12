@@ -74,6 +74,7 @@ export const NewInvoice = () => {
       setPaymentDetails(userPaymentDetails)
       setNotes(userNotes)
     }
+    // eslint-disable-next-line
   }, [])
 
   //updates current total
@@ -148,6 +149,17 @@ export const NewInvoice = () => {
   }
 
   const handleCreateOrSave = () => {
+    //if main fields are empty return an alert
+    if (
+      !invoiceFrom ||
+      !invoiceNumber ||
+      !billTo ||
+      !date ||
+      !lineItems.length > 0
+    )
+      return alert('Please, fill the required fields')
+
+    //otherwise proceed
     if (isEditingInvoice) {
       updateInvoice(
         userId,
@@ -212,7 +224,7 @@ export const NewInvoice = () => {
                 ? `http://localhost:3001/${image}`
                 : imageThumbnail
             }
-            alt="No image has been selected."
+            alt="invoice logo"
             width="200"
             ref={imageOutput}
           />
@@ -275,9 +287,9 @@ export const NewInvoice = () => {
           </div>
         </section>
 
-        <section className="table-responsive ">
+        <section className="table-responsive">
           <table className="table table-hover">
-            <thead className="thead-dark">
+            <thead className="thead-light">
               <tr>
                 <th scope="col">Service</th>
                 <th scope="col">Quantity</th>
@@ -403,13 +415,14 @@ export const NewInvoice = () => {
           Back
         </Link>
 
-        <Link
-          to="/"
+        <button
           className="btn btn-danger"
-          onClick={() => deleteInvoice(invoiceId, userId)}
+          onClick={() =>
+            deleteInvoice(invoiceId, userId).then(() => navigate('/'))
+          }
         >
           Delete
-        </Link>
+        </button>
 
         <button className="btn btn-success" onClick={handleCreateOrSave}>
           {isEditingInvoice ? 'Save Invoice' : 'Create Invoice'}
