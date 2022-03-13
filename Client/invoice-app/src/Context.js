@@ -22,7 +22,7 @@ const AppProvider = ({ children }) => {
     if (userId) {
       try {
         const response = await fetch(
-          `http://localhost:3001/api/get-invoices/${userId}`
+          `http://localhost:3001/api/invoice/all/${userId}`
         )
         const data = await response.json()
         dispatch({ type: 'SET_INVOICES', payload: data })
@@ -65,7 +65,7 @@ const AppProvider = ({ children }) => {
 
       try {
         const response = await fetch(
-          'http://localhost:3001/api/add-invoice',
+          'http://localhost:3001/api/invoice/add',
           options
         )
         const data = await response.json()
@@ -110,7 +110,7 @@ const AppProvider = ({ children }) => {
 
       try {
         const response = await fetch(
-          'http://localhost:3001/api/update-invoice',
+          'http://localhost:3001/api/invoice/update',
           options
         )
         const data = await response.json()
@@ -126,7 +126,7 @@ const AppProvider = ({ children }) => {
   const deleteInvoice = async (invoiceId, userId) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/delete/${invoiceId}`,
+        `http://localhost:3001/api/invoice/${invoiceId}`,
         {
           method: 'delete',
         }
@@ -167,7 +167,7 @@ const AppProvider = ({ children }) => {
     }
     try {
       const response = await fetch(
-        'http://localhost:3001/api/add-user',
+        'http://localhost:3001/api/user/add',
         options
       )
       const data = await response.json()
