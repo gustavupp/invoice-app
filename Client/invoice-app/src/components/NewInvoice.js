@@ -5,6 +5,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 
 export const NewInvoice = () => {
+  //const [theme, setTheme] = useState('info')
   //auth0 stuff. Grab userId from auth0
   const { user: { sub: userId } = {} } = useAuth0()
   let navigate = useNavigate()
@@ -225,7 +226,8 @@ export const NewInvoice = () => {
                 : imageThumbnail
             }
             alt="invoice logo"
-            width="200"
+            width="180"
+            style={{ borderRadius: '10px' }}
             ref={imageOutput}
           />
         </p>
@@ -287,9 +289,13 @@ export const NewInvoice = () => {
           </div>
         </section>
 
-        <section className="table-responsive">
-          <table className="table table-hover">
-            <thead className="thead-light">
+        <section style={{ borderRadius: '10px' }} className="table-responsive">
+          <table
+            style={{ borderRadius: '10px' }}
+            className="table table-info"
+            //className={`table table-${theme}`}
+          >
+            <thead className="thead-dark">
               <tr>
                 <th scope="col">Service</th>
                 <th scope="col">Quantity</th>
@@ -411,7 +417,7 @@ export const NewInvoice = () => {
       </div>
 
       <div className="d-flex justify-content-between m-2">
-        <Link to="/" className="btn btn-primary">
+        <Link to="/" className="btn btn-info">
           Back
         </Link>
 
@@ -424,7 +430,7 @@ export const NewInvoice = () => {
           Delete
         </button>
 
-        <button className="btn btn-success" onClick={handleCreateOrSave}>
+        <button className="btn btn-primary" onClick={handleCreateOrSave}>
           {isEditingInvoice ? 'Save Invoice' : 'Create Invoice'}
         </button>
       </div>

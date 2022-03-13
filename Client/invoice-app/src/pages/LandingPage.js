@@ -1,5 +1,5 @@
 import React from 'react'
-import landingPageImage from '../assets/landingPageImage.jpg'
+import landingPageImage from '../assets/landingPageImage.png'
 import { useAuth0 } from '@auth0/auth0-react'
 import '../styles/landingPage.css'
 

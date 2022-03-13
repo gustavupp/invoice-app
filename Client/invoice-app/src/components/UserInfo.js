@@ -26,15 +26,13 @@ const UserInfo = () => {
   const [userNotes, setUserNotes] = useState(notes)
 
   useEffect(() => {
-    if (email && userId) {
-      setId(userId)
-      setUserEmail(email)
-      setUserMobile(mobile)
-      setUserSignUpDate(signUpDate)
-      setUserPaymentDetails(paymentDetails)
-      setUserNotes(notes)
-    }
-  }, [email, userId])
+    setId(userId)
+    setUserEmail(email)
+    setUserMobile(mobile)
+    setUserSignUpDate(signUpDate)
+    setUserPaymentDetails(paymentDetails)
+    setUserNotes(notes)
+  }, [userId, email, mobile, signUpDate, paymentDetails, notes])
 
   return (
     <main className="container my-5 py-3">
@@ -130,7 +128,7 @@ const UserInfo = () => {
       </p>
 
       <div className="d-flex justify-content-between m-2">
-        <Link to="/" className="btn btn-primary">
+        <Link to="/" className="btn btn-info">
           Back
         </Link>
         <button

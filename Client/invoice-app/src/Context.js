@@ -69,6 +69,7 @@ const AppProvider = ({ children }) => {
           options
         )
         const data = await response.json()
+        console.log(data)
         getInvoices(userId)
       } catch (error) {
         console.log(error)

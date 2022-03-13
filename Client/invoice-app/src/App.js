@@ -3,7 +3,6 @@ import { InvoiceTemplate } from './components/InvoiceTemplate'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import MainPage from './pages/MainPage'
-import AboutPage from './pages/AboutPage'
 import NewInvoicePage from './pages/NewInvoicePage'
 import UserSettingsPage from './pages/UserSettingsPage'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -30,7 +29,8 @@ function App() {
         }
       })
     }
-  }, [userId, email])
+    // eslint-disable-next-line
+  }, [userId])
 
   return (
     <BrowserRouter>
@@ -49,7 +49,6 @@ function App() {
         <Route path="/invoice/new" element={<NewInvoicePage />} />
         <Route path="/invoices/:invoiceId" element={<InvoiceTemplate />} />
         <Route path="/settings" element={<UserSettingsPage />} />
-        <Route path="/about" element={<AboutPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

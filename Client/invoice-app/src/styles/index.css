@@ -1,9 +1,22 @@
 :root {
   --dark: #343a40;
-  --darkBackground: #25292c;
+  --dark-background: #25292c;
+  --main-color: #6c56e1;
+  --primary-color: #ecf7f9;
+  --secondary-color: #212121;
+  --nav-color: #6c56e1;
+  --nav-text-color: #edf2fc;
+  --hover-color: #c0b4cf;
 }
 
-#343A40 * {
+.light-mode {
+  --secondary-color: #212121;
+  --primary-color: #edf2fc;
+  --nav-color: #6c56e1;
+  --nav-text-color: #edf2fc;
+}
+
+* {
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
@@ -12,6 +25,7 @@
 }
 
 body {
-  background: var(--darkBackground);
+  background: var(--primary-color);
+  color: var(--secondary-color);
 }
 /*# sourceMappingURL=index.css.map */

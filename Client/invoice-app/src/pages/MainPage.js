@@ -1,11 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../Context'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const MainPage = () => {
   const { invoices, setIsEditingInvoice } = useContext(AppContext)
   const [globalTotal, setGlobalTotal] = useState(0)
   const [fiscalYearTotal, setFiscalYearTotal] = useState(0)
+  //const [theme, setTheme] = useState('info')
+  //auth0 stuff
+  const { isAuthenticated, user: { picture = '', nickname = '' } = {} } =
+    useAuth0()
 
   useEffect(() => {
     //global total setup
@@ -41,6 +46,18 @@ const MainPage = () => {
 
   return (
     <main style={{ minHeight: '70vh' }} className="container my-5">
+      {isAuthenticated ? (
+        <div className=" d-flex align-items-center justify-content-start">
+          <h5>Welcome {nickname} !</h5>
+          <img
+            src={picture}
+            alt="profile"
+            width="50px"
+            style={{ borderRadius: '50%', margin: '0 25px' }}
+          />
+        </div>
+      ) : null}
+
       {/* ************TOTALS TABLE******** */}
       <div
         style={{ borderRadius: '10px' }}
@@ -48,7 +65,8 @@ const MainPage = () => {
       >
         <table
           style={{ borderRadius: '10px' }}
-          className="table table-invoice table-dark"
+          // className={`table table-invoice table-${theme}`}
+          className="table table-invoice table-info"
         >
           <thead className="thead-dark">
             <tr>
@@ -71,68 +89,88 @@ const MainPage = () => {
       </div>
 
       {/* ************INVOICES TABLE******** */}
-      <div style={{ borderRadius: '10px' }} className="table-responsive my-4">
-        <table
-          style={{ borderRadius: '10px' }}
-          className="table table-invoice table-dark"
-        >
-          <thead className="thead-dark">
-            <tr>
-              <th className="text-center">INVOICE</th>
-              <th className="text-center">TO</th>
-              <th className="text-center">FROM</th>
-              <th className="text-center">TOTAL</th>
-              <th className="text-center">DATE</th>
-              <th className="text-center">VIEW/EDIT</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoices &&
-              //this built in method assigns a key to every child
-              React.Children.toArray(
-                invoices.map((item) => {
-                  const {
-                    billTo,
-                    invoiceFrom,
-                    invoiceNumber,
-                    subtotal,
-                    date,
-                    invoiceId,
-                  } = item
-                  return (
-                    <tr>
-                      <td className="text-center">#{invoiceNumber}</td>
-                      <td className="text-center">{billTo}</td>
-                      <td className="text-center">{invoiceFrom}</td>
-                      <td className="text-center">${subtotal}</td>
-                      <td className="text-center">{date}</td>
-                      <td className="text-center">
-                        <Link
-                          to={`/invoices/${invoiceId}`}
-                          className="btn btn-primary mr-1 mb-1"
-                        >
-                          View
-                        </Link>
-                        <Link
-                          to={`/invoice/${invoiceId}`}
-                          className="btn btn-secondary mr-1 mb-1"
-                          onClick={() => setIsEditingInvoice(true)}
-                        >
-                          Edit
-                        </Link>
-                      </td>
-                    </tr>
-                  )
-                })
-              )}
-          </tbody>
-        </table>
-      </div>
+      {invoices.length > 0 ? (
+        <div style={{ borderRadius: '10px' }} className="table-responsive my-4">
+          <table
+            style={{ borderRadius: '10px' }}
+            //className={`table table-invoice table-${theme}`}
+            className="table table-invoice table-info"
+          >
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col" className="text-center">
+                  INVOICE
+                </th>
+                <th scope="col" className="text-center">
+                  TO
+                </th>
+                <th scope="col" className="text-center">
+                  FROM
+                </th>
+                <th scope="col" className="text-center">
+                  TOTAL
+                </th>
+                <th scope="col" className="text-center">
+                  DATE
+                </th>
+                <th scope="col" className="text-center">
+                  VIEW/EDIT
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {invoices &&
+                //this built in method assigns a key to every child
+                React.Children.toArray(
+                  invoices.map((item) => {
+                    const {
+                      billTo,
+                      invoiceFrom,
+                      invoiceNumber,
+                      subtotal,
+                      date,
+                      invoiceId,
+                    } = item
+                    return (
+                      <tr>
+                        <td className="text-center">#{invoiceNumber}</td>
+                        <td className="text-center">{billTo}</td>
+                        <td className="text-center">{invoiceFrom}</td>
+                        <td className="text-center">${subtotal}</td>
+                        <td className="text-center">{date}</td>
+                        <td className="text-center">
+                          <Link
+                            to={`/invoices/${invoiceId}`}
+                            className="btn btn-primary mr-1 mb-1"
+                          >
+                            View
+                          </Link>
+                          <Link
+                            to={`/invoice/${invoiceId}`}
+                            className="btn btn-info mr-1 mb-1"
+                            onClick={() => setIsEditingInvoice(true)}
+                          >
+                            Edit
+                          </Link>
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p className="text-center my-5">
+          Looks like you haven't created your first invoice yet... Create your
+          first one with a few clicks! 😀
+        </p>
+      )}
 
       <Link
         to="/invoice/new"
         type="button"
-        className="btn btn-success"
+        className="btn btn-primary"
         onClick={() => setIsEditingInvoice(false)}
       >
         New Invoice
