@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AppContext } from '../Context'
+import Loading from './Loading'
 
 const UserInfo = () => {
   const navigate = useNavigate()
@@ -16,6 +17,8 @@ const UserInfo = () => {
       } = {},
     ],
     updateUserSettings,
+    isUserSettingsLoading,
+    setIsUserSettingsLoading,
   } = useContext(AppContext)
 
   const [id, setId] = useState(userId)
@@ -33,6 +36,8 @@ const UserInfo = () => {
     setUserPaymentDetails(paymentDetails)
     setUserNotes(notes)
   }, [userId, email, mobile, signUpDate, paymentDetails, notes])
+
+  if (isUserSettingsLoading) return <Loading />
 
   return (
     <main className="container my-5 py-3">

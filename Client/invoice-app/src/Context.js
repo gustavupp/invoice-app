@@ -6,11 +6,17 @@ const intialState = {
   invoices: [],
   isEditingInvoice: false,
   userInfo: [],
+  isInvoiceLoading: false,
+  isUserSettingsLoading: false,
 }
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState)
   /********************************INVOICES*****************************************/
+
+  const setIsInvoiceLoading = (trueOrFalse) => {
+    dispatch({ type: 'SET_IS_INVOICE_LOADING', payload: trueOrFalse })
+  }
 
   const setIsEditingInvoice = (trueOrFalse) => {
     dispatch({ type: 'SET_IS_EDITING_INVOICE', payload: trueOrFalse })
@@ -25,6 +31,7 @@ const AppProvider = ({ children }) => {
         )
         const data = await response.json()
         dispatch({ type: 'SET_INVOICES', payload: data })
+        setIsInvoiceLoading(false)
       } catch (error) {
         console.log(error)
       }
@@ -44,6 +51,7 @@ const AppProvider = ({ children }) => {
     notes,
     userId
   ) => {
+    setIsInvoiceLoading(true)
     if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
       let formData = new FormData()
       formData.append('image', image)
@@ -90,6 +98,7 @@ const AppProvider = ({ children }) => {
     paymentDetails,
     notes
   ) => {
+    setIsInvoiceLoading(true)
     if (invoiceFrom && billTo && invoiceNumber && date && subtotal) {
       let formData = new FormData()
       formData.append('image', image)
@@ -115,6 +124,7 @@ const AppProvider = ({ children }) => {
         const data = await response.json()
         console.log(data)
         getInvoices(userId)
+        setIsEditingInvoice(false)
       } catch (error) {
         console.log(error)
       }
@@ -123,6 +133,7 @@ const AppProvider = ({ children }) => {
 
   //delete invoice from db
   const deleteInvoice = async (invoiceId, userId) => {
+    setIsInvoiceLoading(true)
     try {
       const response = await fetch(
         `https://simply-invoice-app.herokuapp.com/api/invoice/${invoiceId}`,
@@ -141,6 +152,10 @@ const AppProvider = ({ children }) => {
 
   const addUserToContext = (userData) => {
     dispatch({ type: 'ADD_USER_INFO', payload: userData })
+  }
+
+  const setIsUserSettingsLoading = (trueOrFalse) => {
+    dispatch({ type: 'SET_IS_USER_SETTINGS_LOADING', payload: trueOrFalse })
   }
 
   //check if user exists in the database
@@ -186,6 +201,7 @@ const AppProvider = ({ children }) => {
       )
       const data = await response.json()
       dispatch({ type: 'ADD_USER_INFO', payload: data })
+      setIsUserSettingsLoading(false)
     } catch (error) {
       throw error
     }
@@ -197,6 +213,7 @@ const AppProvider = ({ children }) => {
     userPaymentDetails,
     userNotes
   ) => {
+    setIsUserSettingsLoading(true)
     const options = {
       method: 'PUT',
       headers: {
@@ -238,6 +255,8 @@ const AppProvider = ({ children }) => {
         updateInvoice,
         deleteInvoice,
         updateUserSettings,
+        setIsInvoiceLoading,
+        setIsUserSettingsLoading,
       }}
     >
       {children}

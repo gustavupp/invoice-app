@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState, useEffect } from 'react'
 import { AppContext } from '../Context'
+import Loading from './Loading'
 import { AiOutlineClose, AiFillEdit } from 'react-icons/ai'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -16,6 +17,8 @@ export const NewInvoice = () => {
     postInvoiceToServer,
     updateInvoice,
     deleteInvoice,
+    setIsInvoiceLoading,
+    isInvoiceLoading,
     userInfo: [{ notes: userNotes, paymentDetails: userPaymentDetails } = {}],
   } = useContext(AppContext)
 
@@ -149,6 +152,8 @@ export const NewInvoice = () => {
     setImage(e.target.files[0])
   }
 
+  if (isInvoiceLoading) return <Loading />
+
   const handleCreateOrSave = () => {
     //if main fields are empty return an alert
     if (
@@ -162,6 +167,7 @@ export const NewInvoice = () => {
 
     //otherwise proceed
     if (isEditingInvoice) {
+      setIsInvoiceLoading(true)
       updateInvoice(
         userId,
         invoiceId,
@@ -176,6 +182,7 @@ export const NewInvoice = () => {
         notes
       ).then(() => navigate('/'))
     } else {
+      setIsInvoiceLoading(true)
       postInvoiceToServer(
         invoiceFrom,
         billTo,
