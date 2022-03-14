@@ -380,7 +380,7 @@ export const NewInvoice = () => {
 
         {
           <button
-            className="btn btn-primary mr-3"
+            className="btn btn-info mr-3"
             type="button"
             id="btn"
             onClick={addLineItem}
@@ -426,7 +426,7 @@ export const NewInvoice = () => {
       </div>
 
       <div className="d-flex justify-content-between m-2">
-        <Link to="/" className="btn btn-info">
+        <Link to="/" className="btn btn-secondary">
           Back
         </Link>
 
@@ -439,7 +439,7 @@ export const NewInvoice = () => {
           Delete
         </button>
 
-        <button className="btn btn-primary" onClick={handleCreateOrSave}>
+        <button className="btn btn-info" onClick={handleCreateOrSave}>
           {isEditingInvoice ? 'Save Invoice' : 'Create Invoice'}
         </button>
       </div>

@@ -174,7 +174,7 @@ const MainPage = () => {
       <Link
         to="/invoice/new"
         type="button"
-        className="btn btn-primary"
+        className="btn btn-info"
         onClick={() => setIsEditingInvoice(false)}
       >
         New Invoice
