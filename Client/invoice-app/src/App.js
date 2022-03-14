@@ -11,8 +11,13 @@ import { AppContext } from './Context'
 import PrivateRoute from './pages/PrivateRoute'
 
 function App() {
-  const { addUserToContext, getInvoices, checkIfUserExists, addUserToDb } =
-    useContext(AppContext)
+  const {
+    addUserToContext,
+    getInvoices,
+    checkIfUserExists,
+    addUserToDb,
+    userInfo,
+  } = useContext(AppContext)
 
   //auth0 stuff
   const { user: { email = '', sub: userId = '' } = {} } = useAuth0()
@@ -21,11 +26,18 @@ function App() {
   useEffect(() => {
     if (userId) {
       checkIfUserExists(userId).then((data) => {
-        if (data.length === 0)
-          addUserToDb(email, userId).then(() => getInvoices(userId))
-        else {
-          getInvoices(userId)
+        if (data.length === 0) {
+          console.log({ data, userId })
+          addUserToDb(email, userId)
+            .then(() => checkIfUserExists(userId))
+            .then((data) => {
+              addUserToContext(data)
+              getInvoices(userId)
+            })
+        } else {
+          console.log({ data, userId })
           addUserToContext(data)
+          getInvoices(userId)
         }
       })
     }

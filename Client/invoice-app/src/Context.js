@@ -10,7 +10,6 @@ const intialState = {
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState)
-
   /********************************INVOICES*****************************************/
 
   const setIsEditingInvoice = (trueOrFalse) => {
@@ -22,7 +21,7 @@ const AppProvider = ({ children }) => {
     if (userId) {
       try {
         const response = await fetch(
-          `http://localhost:3001/api/invoice/all/${userId}`
+          `https://simply-invoice-app.herokuapp.com/api/invoice/all/${userId}`
         )
         const data = await response.json()
         dispatch({ type: 'SET_INVOICES', payload: data })
@@ -65,7 +64,7 @@ const AppProvider = ({ children }) => {
 
       try {
         const response = await fetch(
-          'http://localhost:3001/api/invoice/add',
+          'https://simply-invoice-app.herokuapp.com/api/invoice/add',
           options
         )
         const data = await response.json()
@@ -111,7 +110,7 @@ const AppProvider = ({ children }) => {
 
       try {
         const response = await fetch(
-          'http://localhost:3001/api/invoice/update',
+          'https://simply-invoice-app.herokuapp.com/api/invoice/update',
           options
         )
         const data = await response.json()
@@ -127,7 +126,7 @@ const AppProvider = ({ children }) => {
   const deleteInvoice = async (invoiceId, userId) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/invoice/${invoiceId}`,
+        `https://simply-invoice-app.herokuapp.com/api/invoice/${invoiceId}`,
         {
           method: 'delete',
         }
@@ -142,13 +141,15 @@ const AppProvider = ({ children }) => {
   /********************************USERS******************************************/
 
   const addUserToContext = (userData) => {
-    dispatch({ type: 'ADD_USER', payload: userData })
+    dispatch({ type: 'ADD_USER_INFO', payload: userData })
   }
 
   //check if user exists in the database
   const checkIfUserExists = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/user/${userId}`)
+      const response = await fetch(
+        `https://simply-invoice-app.herokuapp.com/api/user/${userId}`
+      )
       const data = await response.json()
       return data
     } catch (error) {
@@ -168,7 +169,7 @@ const AppProvider = ({ children }) => {
     }
     try {
       const response = await fetch(
-        'http://localhost:3001/api/user/add',
+        'https://simply-invoice-app.herokuapp.com/api/user/add',
         options
       )
       const data = await response.json()
@@ -181,7 +182,9 @@ const AppProvider = ({ children }) => {
   //get user info from db
   const getUserFromDb = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/user/${userId}`)
+      const response = await fetch(
+        `https://simply-invoice-app.herokuapp.com/api/user/${userId}`
+      )
       const data = await response.json()
       dispatch({ type: 'ADD_USER_INFO', payload: data })
     } catch (error) {
@@ -211,7 +214,7 @@ const AppProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        'http://localhost:3001/api/user/update',
+        'https://simply-invoice-app.herokuapp.com/api/user/update',
         options
       )
       const data = await response.json()

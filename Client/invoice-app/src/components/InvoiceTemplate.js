@@ -36,7 +36,7 @@ export function InvoiceTemplate() {
         lineItems,
         paymentDetails,
         notes,
-      } = invoices.find((item) => item.invoiceId == invoiceId)
+      } = invoices.find((item) => item.invoiceId === parseInt(invoiceId))
       setSubtotal(subtotal)
       setInvoiceFrom(invoiceFrom)
       setBillTo(billTo)

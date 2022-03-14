@@ -6,9 +6,6 @@ export const reducer = (state, action) => {
     case 'SET_IS_EDITING_INVOICE':
       return { ...state, isEditingInvoice: action.payload }
 
-    case 'ADD_USER':
-      return { ...state, userInfo: action.payload }
-
     case 'ADD_USER_INFO':
       return { ...state, userInfo: action.payload }
 
