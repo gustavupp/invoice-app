@@ -6,7 +6,7 @@ const invoices = require('./routes/invoices')
 
 //middlewares
 app.use(cors())
-app.use('/uploads', express.static('uploads'))
+app.use('/uploads', express.static('./uploads'))
 
 //user routes
 app.use('/api/user', users)
