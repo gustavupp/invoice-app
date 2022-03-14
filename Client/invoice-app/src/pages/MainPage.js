@@ -101,14 +101,15 @@ const MainPage = () => {
             <thead className="thead-dark">
               <tr>
                 <th scope="col" className="text-center">
-                  INVOICE
-                </th>
-                <th scope="col" className="text-center">
-                  TO
+                  No.
                 </th>
                 <th scope="col" className="text-center">
                   FROM
                 </th>
+                <th scope="col" className="text-center">
+                  TO
+                </th>
+
                 <th scope="col" className="text-center">
                   TOTAL
                 </th>
@@ -116,7 +117,7 @@ const MainPage = () => {
                   DATE
                 </th>
                 <th scope="col" className="text-center">
-                  VIEW/EDIT
+                  VIEW | EDIT
                 </th>
               </tr>
             </thead>
@@ -136,8 +137,9 @@ const MainPage = () => {
                     return (
                       <tr>
                         <td className="text-center">#{invoiceNumber}</td>
-                        <td className="text-center">{billTo}</td>
                         <td className="text-center">{invoiceFrom}</td>
+                        <td className="text-center">{billTo}</td>
+
                         <td className="text-center">${subtotal}</td>
                         <td className="text-center">{date}</td>
                         <td className="text-center">
