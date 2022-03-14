@@ -11,7 +11,7 @@ const getUser = (req, res) => {
       'SELECT * FROM users WHERE userId = ?',
       userId,
       (err, result) => {
-        if (err) console.log(err)
+        if (err) res.send(err)
         else {
           res.send(result)
         }
