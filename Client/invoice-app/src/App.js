@@ -11,13 +11,8 @@ import { AppContext } from './Context'
 import PrivateRoute from './pages/PrivateRoute'
 
 function App() {
-  const {
-    addUserToContext,
-    getInvoices,
-    checkIfUserExists,
-    addUserToDb,
-    userInfo,
-  } = useContext(AppContext)
+  const { addUserToContext, getInvoices, checkIfUserExists, addUserToDb } =
+    useContext(AppContext)
 
   //auth0 stuff
   const { user: { email = '', sub: userId = '' } = {} } = useAuth0()

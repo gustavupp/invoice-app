@@ -18,8 +18,6 @@ const UserInfo = () => {
     updateUserSettings,
   } = useContext(AppContext)
 
-  console.log({ email, userId, notes })
-
   const [id, setId] = useState(userId)
   const [userEmail, setUserEmail] = useState(email)
   const [userMobile, setUserMobile] = useState(mobile)
