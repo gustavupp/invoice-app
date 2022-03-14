@@ -21,7 +21,7 @@ const AppProvider = ({ children }) => {
     if (userId) {
       try {
         const response = await fetch(
-          `https://simply-invoice-app.herokuapp.com/api/invoice/all/${userId}`
+          `https://simplyinvoice.netlify.app/api/invoice/all/${userId}`
         )
         const data = await response.json()
         dispatch({ type: 'SET_INVOICES', payload: data })
@@ -64,7 +64,7 @@ const AppProvider = ({ children }) => {
 
       try {
         const response = await fetch(
-          'https://simply-invoice-app.herokuapp.com/api/invoice/add',
+          'https://simplyinvoice.netlify.app/api/invoice/add',
           options
         )
         const data = await response.json()
@@ -107,10 +107,9 @@ const AppProvider = ({ children }) => {
         method: 'PUT',
         body: formData,
       }
-
       try {
         const response = await fetch(
-          'https://simply-invoice-app.herokuapp.com/api/invoice/update',
+          'https://simplyinvoice.netlify.app/api/invoice/update',
           options
         )
         const data = await response.json()
@@ -126,7 +125,7 @@ const AppProvider = ({ children }) => {
   const deleteInvoice = async (invoiceId, userId) => {
     try {
       const response = await fetch(
-        `https://simply-invoice-app.herokuapp.com/api/invoice/${invoiceId}`,
+        `https://simplyinvoice.netlify.app/api/invoice/${invoiceId}`,
         {
           method: 'delete',
         }
@@ -148,7 +147,7 @@ const AppProvider = ({ children }) => {
   const checkIfUserExists = async (userId) => {
     try {
       const response = await fetch(
-        `https://simply-invoice-app.herokuapp.com/api/user/${userId}`
+        `https://simplyinvoice.netlify.app/api/user/${userId}`
       )
       const data = await response.json()
       return data
@@ -169,7 +168,7 @@ const AppProvider = ({ children }) => {
     }
     try {
       const response = await fetch(
-        'https://simply-invoice-app.herokuapp.com/api/user/add',
+        'https://simplyinvoice.netlify.app/api/user/add',
         options
       )
       const data = await response.json()
@@ -183,7 +182,7 @@ const AppProvider = ({ children }) => {
   const getUserFromDb = async (userId) => {
     try {
       const response = await fetch(
-        `https://simply-invoice-app.herokuapp.com/api/user/${userId}`
+        `https://simplyinvoice.netlify.app/api/user/${userId}`
       )
       const data = await response.json()
       dispatch({ type: 'ADD_USER_INFO', payload: data })
@@ -214,7 +213,7 @@ const AppProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        'https://simply-invoice-app.herokuapp.com/api/user/update',
+        'https://simplyinvoice.netlify.app/api/user/update',
         options
       )
       const data = await response.json()
