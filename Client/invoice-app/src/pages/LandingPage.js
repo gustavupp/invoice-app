@@ -10,13 +10,15 @@ const LandingPage = () => {
   return (
     <main className="wrapper container row text-center mx-auto py-5 align-items-center">
       <div className="hero-title col-md-12 col-lg-6">
-        <h1>Invoice App</h1>
+        <h1 className="font-weight-bold">
+          Simply<span style={{ color: '#17A2B8' }}>Invoice</span>
+        </h1>
         <p>
           The boring task of invoicing made easy! Signup to start simplifying
           how you create invoices.
         </p>
-        <button onClick={loginWithRedirect} className="btn btn-primary">
-          Login/Signup
+        <button onClick={loginWithRedirect} className="btn btn-info">
+          Login | Signup
         </button>
       </div>
       <div className="image-container col-md-12 col-lg-6">

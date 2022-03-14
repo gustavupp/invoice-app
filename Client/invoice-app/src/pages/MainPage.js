@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../Context'
+import { AiFillEdit } from 'react-icons/ai'
+import { BiShowAlt } from 'react-icons/bi'
 import { useAuth0 } from '@auth0/auth0-react'
 
 const MainPage = () => {
@@ -141,16 +143,16 @@ const MainPage = () => {
                         <td className="text-center">
                           <Link
                             to={`/invoices/${invoiceId}`}
-                            className="btn btn-primary mr-1 mb-1"
+                            className="btn btn-primary mr-2 mb-1"
                           >
-                            View
+                            <BiShowAlt style={{ fontSize: '22px' }} />
                           </Link>
                           <Link
                             to={`/invoice/${invoiceId}`}
-                            className="btn btn-info mr-1 mb-1"
+                            className="btn btn-info mr-2 mb-1"
                             onClick={() => setIsEditingInvoice(true)}
                           >
-                            Edit
+                            <AiFillEdit style={{ fontSize: '22px' }} />
                           </Link>
                         </td>
                       </tr>

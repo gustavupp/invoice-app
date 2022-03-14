@@ -9,8 +9,8 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <Link to="/" className="navbar-brand">
-        InvoiceApp
+      <Link to="/" className="navbar-brand font-weight-bold">
+        Simply<span style={{ color: '#17A2B8' }}>Invoice</span>
       </Link>
 
       <button
@@ -27,9 +27,9 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarNav">
         {isAuthenticated ? (
           <ul className="navbar-nav">
-            <li className="mr-1 nav-item active">
+            <li className="mr-1 nav-item">
               <Link to="/" className="nav-link">
-                Dashboard <span className="sr-only">(current)</span>
+                Dashboard
               </Link>
             </li>
 
@@ -42,7 +42,7 @@ const Navbar = () => {
         ) : null}
 
         <button
-          className="nav-link btn btn-primary"
+          className="nav-link btn btn-info"
           style={{ cursor: 'pointer', marginRight: '40px' }}
           onClick={isAuthenticated ? logout : loginWithRedirect}
         >
