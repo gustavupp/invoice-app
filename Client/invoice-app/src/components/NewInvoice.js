@@ -16,7 +16,7 @@ export const NewInvoice = () => {
     postInvoiceToServer,
     updateInvoice,
     deleteInvoice,
-    userInfo: [{ notes: userNotes, paymentDetails: userPaymentDetails }],
+    userInfo: [{ notes: userNotes, paymentDetails: userPaymentDetails } = {}],
   } = useContext(AppContext)
 
   const { invoiceId } = useParams()
