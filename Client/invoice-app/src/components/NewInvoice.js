@@ -19,6 +19,7 @@ export const NewInvoice = () => {
     deleteInvoice,
     setIsInvoiceLoading,
     isInvoiceLoading,
+    setIsEditingInvoice,
     userInfo: [{ notes: userNotes, paymentDetails: userPaymentDetails } = {}],
   } = useContext(AppContext)
 
@@ -46,9 +47,10 @@ export const NewInvoice = () => {
   const [editingLineItemId, setEditingLineItemId] = useState('')
   const [isEditingLineItem, setIsEditingLineItem] = useState(false)
 
-  //when component loadeds and the invoices array is not empty, look for the given id in the array and populate the fields
+  //when component loads and the invoices array is not empty, look for the given id in the array and populate the fields
   useEffect(() => {
     if (invoiceId && invoices.length > 0) {
+      setIsEditingInvoice(true)
       let {
         subtotal,
         invoiceFrom,
