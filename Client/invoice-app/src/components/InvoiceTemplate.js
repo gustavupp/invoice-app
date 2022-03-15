@@ -69,7 +69,7 @@ export function InvoiceTemplate() {
               <img
                 src={`https://simply-invoice-app.herokuapp.com/${image}`}
                 alt="logo"
-                height="150px"
+                width="250px"
               />
             ) : null}
           </div>
