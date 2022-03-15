@@ -44,7 +44,11 @@ const Navbar = () => {
         <button
           className="nav-link btn btn-info"
           style={{ cursor: 'pointer', marginRight: '40px' }}
-          onClick={isAuthenticated ? logout : loginWithRedirect}
+          onClick={
+            isAuthenticated
+              ? () => logout({ returnTo: window.location.origin })
+              : loginWithRedirect
+          }
         >
           {isAuthenticated ? 'Logout' : 'Login'}
         </button>
