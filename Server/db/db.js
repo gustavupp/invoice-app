@@ -4,6 +4,7 @@ const mysql = require('mysql')
 
 //databse connection
 const db = mysql.createPool({
+  multipleStatements: true, //allows multiple queries
   connectionLimit: 100,
   user: 'b947055890e9b7',
   host: 'us-cdbr-east-05.cleardb.net',

@@ -232,7 +232,7 @@ export const NewInvoice = () => {
             //if image variable is coming from db its value is a string(a path)
             src={
               typeof image === 'string'
-                ? `https://simply-invoice-app.herokuapp.com/${image}`
+                ? `http://localhost:3001/${image}`
                 : imageThumbnail
             }
             alt="invoice logo"

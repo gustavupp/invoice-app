@@ -15,6 +15,12 @@ export const reducer = (state, action) => {
     case 'SET_IS_USER_SETTINGS_LOADING':
       return { ...state, isUserSettingsLoading: action.payload }
 
+    case 'SET_AMOUNT_OF_PAGES':
+      return { ...state, amountOfPages: action.payload }
+
+    case 'SET_TOTALS':
+      return { ...state, totals: action.payload }
+
     default:
       return state
   }
