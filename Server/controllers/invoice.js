@@ -186,7 +186,7 @@ const getInvoices = (req, res) => {
     console.log('connected as id ' + connection.threadId)
 
     connection.query(
-      'SELECT * FROM invoices WHERE userId = ?',
+      'SELECT * FROM invoices WHERE userId = ? ORDER BY invoiceId DESC',
       userId,
       (err, result) => {
         if (err) console.log(err)
