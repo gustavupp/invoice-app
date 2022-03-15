@@ -72,7 +72,8 @@ export const NewInvoice = () => {
       setPaymentDetails(paymentDetails)
       setNotes(notes)
     }
-  }, [invoiceId, invoices])
+    // eslint-disable-next-line
+  }, [invoiceId, invoices, setIsEditingInvoice])
 
   //populate notes and details fields with user info
   useEffect(() => {

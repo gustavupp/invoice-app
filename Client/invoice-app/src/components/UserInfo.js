@@ -18,7 +18,6 @@ const UserInfo = () => {
     ],
     updateUserSettings,
     isUserSettingsLoading,
-    setIsUserSettingsLoading,
   } = useContext(AppContext)
 
   const [id, setId] = useState(userId)
