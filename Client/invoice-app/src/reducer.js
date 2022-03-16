@@ -21,6 +21,9 @@ export const reducer = (state, action) => {
     case 'SET_TOTALS':
       return { ...state, totals: action.payload }
 
+    case 'SET_IS_PAGINATION_LOADING':
+      return { ...state, isPaginationLoading: action.payload }
+
     default:
       return state
   }

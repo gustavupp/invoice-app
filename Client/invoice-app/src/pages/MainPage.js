@@ -16,6 +16,8 @@ const MainPage = () => {
   const { isAuthenticated, user: { picture = '', nickname = '' } = {} } =
     useAuth0()
 
+  //if (isPaginationLoading) return <Loading />
+
   return (
     <main style={{ minHeight: '70vh' }} className="container my-5 ">
       {isAuthenticated ? (

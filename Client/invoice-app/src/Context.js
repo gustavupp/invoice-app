@@ -8,6 +8,7 @@ const intialState = {
   userInfo: [],
   isInvoiceLoading: false,
   isUserSettingsLoading: false,
+  isPaginationLoading: false,
   amountOfPages: 0,
   totals: 0,
 }
@@ -24,12 +25,16 @@ const AppProvider = ({ children }) => {
     dispatch({ type: 'SET_IS_EDITING_INVOICE', payload: trueOrFalse })
   }
 
+  const setIsPaginationLoading = (trueOrFalse) => {
+    dispatch({ type: 'SET_IS_PAGINATION_LOADING', payload: trueOrFalse })
+  }
+
   //get all invoices from db
   const getInvoices = async (userId, page = 0) => {
     if (userId) {
       try {
         const response = await fetch(
-          `http://localhost:3001/api/invoice/all/${userId}/?page=${page}&limit=10`
+          `https://simply-invoice-app.herokuapp.com/api/invoice/all/${userId}/?page=${page}&limit=10`
         )
         const data = await response.json()
         console.log(data)
@@ -40,6 +45,7 @@ const AppProvider = ({ children }) => {
         dispatch({ type: 'SET_AMOUNT_OF_PAGES', payload: data[0][0].count })
         dispatch({ type: 'SET_INVOICES', payload: data[1] })
         setIsInvoiceLoading(false)
+        setIsPaginationLoading(false)
       } catch (error) {
         console.log(error)
       }
@@ -80,7 +86,7 @@ const AppProvider = ({ children }) => {
 
       try {
         const response = await fetch(
-          'http://localhost:3001/api/invoice/add',
+          'https://simply-invoice-app.herokuapp.com/api/invoice/add',
           options
         )
         const data = await response.json()
@@ -126,7 +132,7 @@ const AppProvider = ({ children }) => {
       }
       try {
         const response = await fetch(
-          'http://localhost:3001/api/invoice/update',
+          'https://simply-invoice-app.herokuapp.com/api/invoice/update',
           options
         )
         const data = await response.json()
@@ -144,7 +150,7 @@ const AppProvider = ({ children }) => {
     setIsInvoiceLoading(true)
     try {
       const response = await fetch(
-        `http://localhost:3001/api/invoice/${invoiceId}`,
+        `https://simply-invoice-app.herokuapp.com/api/invoice/${invoiceId}`,
         {
           method: 'delete',
         }
@@ -169,7 +175,9 @@ const AppProvider = ({ children }) => {
   //check if user exists in the database
   const checkIfUserExists = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/user/${userId}`)
+      const response = await fetch(
+        `https://simply-invoice-app.herokuapp.com/api/user/${userId}`
+      )
       const data = await response.json()
       return data
     } catch (error) {
@@ -189,7 +197,7 @@ const AppProvider = ({ children }) => {
     }
     try {
       const response = await fetch(
-        'http://localhost:3001/api/user/add',
+        'https://simply-invoice-app.herokuapp.com/api/user/add',
         options
       )
       const data = await response.json()
@@ -202,7 +210,9 @@ const AppProvider = ({ children }) => {
   //get user info from db
   const getUserFromDb = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/user/${userId}`)
+      const response = await fetch(
+        `https://simply-invoice-app.herokuapp.com/api/user/${userId}`
+      )
       const data = await response.json()
       dispatch({ type: 'ADD_USER_INFO', payload: data })
       setIsUserSettingsLoading(false)
@@ -234,7 +244,7 @@ const AppProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        'http://localhost:3001/api/user/update',
+        'https://simply-invoice-app.herokuapp.com/api/user/update',
         options
       )
       const data = await response.json()
@@ -261,6 +271,7 @@ const AppProvider = ({ children }) => {
         updateUserSettings,
         setIsInvoiceLoading,
         setIsUserSettingsLoading,
+        setIsPaginationLoading,
       }}
     >
       {children}
