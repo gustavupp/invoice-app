@@ -8,13 +8,23 @@ const intialState = {
   userInfo: [],
   isInvoiceLoading: false,
   isUserSettingsLoading: false,
-  isPaginationLoading: false,
+  isPaginationLoading: true,
   amountOfPages: 0,
   totals: 0,
+  currentPage: 0,
 }
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState)
+
+  /********************************PAGINATION*****************************************/
+  const setIsPaginationLoading = (trueOrFalse) => {
+    dispatch({ type: 'SET_IS_PAGINATION_LOADING', payload: trueOrFalse })
+  }
+
+  const setCurrentPage = (pageIndex) => {
+    dispatch({ type: 'SET_CURRENT_PAGE_INDEX', payload: pageIndex })
+  }
   /********************************INVOICES*****************************************/
 
   const setIsInvoiceLoading = (trueOrFalse) => {
@@ -25,16 +35,12 @@ const AppProvider = ({ children }) => {
     dispatch({ type: 'SET_IS_EDITING_INVOICE', payload: trueOrFalse })
   }
 
-  const setIsPaginationLoading = (trueOrFalse) => {
-    dispatch({ type: 'SET_IS_PAGINATION_LOADING', payload: trueOrFalse })
-  }
-
   //get all invoices from db
   const getInvoices = async (userId, page = 0) => {
     if (userId) {
       try {
         const response = await fetch(
-          `https://simply-invoice-app.herokuapp.com/api/invoice/all/${userId}/?page=${page}&limit=10`
+          `https://simply-invoice-app.herokuapp.com/api/invoice/all/${userId}/?page=${page}&limit=8`
         )
         const data = await response.json()
         console.log(data)
@@ -272,6 +278,7 @@ const AppProvider = ({ children }) => {
         setIsInvoiceLoading,
         setIsUserSettingsLoading,
         setIsPaginationLoading,
+        setCurrentPage,
       }}
     >
       {children}

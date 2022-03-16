@@ -1,26 +1,37 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { AppContext } from '../Context'
 import { useAuth0 } from '@auth0/auth0-react'
 
 const Pagination = () => {
-  const [page, setPage] = useState(0)
   //auth0 stuff. Grab userId from auth0
   const { user: { sub: userId } = {} } = useAuth0()
-  const { getInvoices, amountOfPages } = useContext(AppContext)
+  const {
+    getInvoices,
+    amountOfPages,
+    setCurrentPage,
+    currentPage,
+    setIsPaginationLoading,
+  } = useContext(AppContext)
 
+  //pagination logic
   const handleClick = (index) => {
-    //setIsPaginationLoading(true)
+    if (index === currentPage) return
+    setIsPaginationLoading(true)
     if (index > amountOfPages) return
-    getInvoices(userId, index).then(() => setPage(index))
+    getInvoices(userId, index).then(() => setCurrentPage(index))
   }
-  console.log(page)
+
   return (
     <div className="d-flex flex-column align-items-center">
       <nav aria-label="Page navigation ">
         <ul className="pagination">
           <li
-            className={page + 1 !== 1 ? 'page-item' : 'page-item disabled'}
-            onClick={() => (page + 1 > 1 ? handleClick(page - 1) : null)}
+            className={
+              currentPage + 1 !== 1 ? 'page-item' : 'page-item disabled'
+            }
+            onClick={() =>
+              currentPage + 1 > 1 ? handleClick(currentPage - 1) : null
+            }
           >
             <button className="page-link" href="#" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
@@ -31,7 +42,9 @@ const Pagination = () => {
           {Array.from({ length: amountOfPages }).map((_, index) => {
             return (
               <li
-                className={page === index ? 'page-item active' : 'page-item'}
+                className={
+                  currentPage === index ? 'page-item active' : 'page-item'
+                }
                 key={index}
               >
                 <button
@@ -45,10 +58,14 @@ const Pagination = () => {
           })}
           <li
             className={
-              page + 1 < amountOfPages ? 'page-item' : 'page-item disabled'
+              currentPage + 1 < amountOfPages
+                ? 'page-item'
+                : 'page-item disabled'
             }
             onClick={() =>
-              page + 1 < amountOfPages ? handleClick(page + 1) : null
+              currentPage + 1 < amountOfPages
+                ? handleClick(currentPage + 1)
+                : null
             }
           >
             <button className="page-link" href="#" aria-label="Next">

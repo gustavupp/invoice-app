@@ -5,18 +5,20 @@ import { AiFillEdit } from 'react-icons/ai'
 import { BiShowAlt } from 'react-icons/bi'
 import { useAuth0 } from '@auth0/auth0-react'
 import Pagination from '../components/Pagination'
+import Loading from '../components/Loading'
 
 const MainPage = () => {
   const {
     invoices,
     setIsEditingInvoice,
+    isPaginationLoading,
     totals: { fiscalYearTotal, globalTotal },
   } = useContext(AppContext)
 
   const { isAuthenticated, user: { picture = '', nickname = '' } = {} } =
     useAuth0()
 
-  //if (isPaginationLoading) return <Loading />
+  if (isPaginationLoading) return <Loading />
 
   return (
     <main style={{ minHeight: '70vh' }} className="container my-5 ">

@@ -24,6 +24,9 @@ export const reducer = (state, action) => {
     case 'SET_IS_PAGINATION_LOADING':
       return { ...state, isPaginationLoading: action.payload }
 
+    case 'SET_CURRENT_PAGE_INDEX':
+      return { ...state, currentPage: action.payload }
+
     default:
       return state
   }
