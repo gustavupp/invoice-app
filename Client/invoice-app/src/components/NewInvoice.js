@@ -236,7 +236,7 @@ export const NewInvoice = () => {
                 : imageThumbnail
             }
             alt="invoice logo"
-            width="180"
+            width="150px"
             style={{ borderRadius: '10px' }}
             ref={imageOutput}
           />
@@ -302,7 +302,7 @@ export const NewInvoice = () => {
         <section style={{ borderRadius: '10px' }} className="table-responsive">
           <table
             style={{ borderRadius: '10px' }}
-            className="table table-info"
+            className="table  table-info"
             //className={`table table-${theme}`}
           >
             <thead className="thead-dark">
