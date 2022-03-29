@@ -6,34 +6,35 @@ import Loading from './Loading'
 const UserInfo = () => {
   const navigate = useNavigate()
   const {
-    userInfo: [
-      {
-        email = '',
-        mobile = '',
-        notes = '',
-        paymentDetails = '',
-        signUpDate = '',
-        userId = '',
-      } = {},
-    ],
+    userInfo: {
+      email = '',
+      mobile = '',
+      notes = '',
+      paymentDetails = '',
+      signUpDate = '',
+      userId = '',
+    } = {},
+
     updateUserSettings,
     isUserSettingsLoading,
   } = useContext(AppContext)
 
-  const [id, setId] = useState(userId)
-  const [userEmail, setUserEmail] = useState(email)
-  const [userMobile, setUserMobile] = useState(mobile)
-  const [userSignUpDate, setUserSignUpDate] = useState(signUpDate)
-  const [userPaymentDetails, setUserPaymentDetails] = useState(paymentDetails)
-  const [userNotes, setUserNotes] = useState(notes)
+  const [id, setId] = useState('')
+  const [userEmail, setUserEmail] = useState('')
+  const [userMobile, setUserMobile] = useState('')
+  const [userSignUpDate, setUserSignUpDate] = useState('')
+  const [userPaymentDetails, setUserPaymentDetails] = useState('')
+  const [userNotes, setUserNotes] = useState('')
 
   useEffect(() => {
-    setId(userId)
-    setUserEmail(email)
-    setUserMobile(mobile)
-    setUserSignUpDate(signUpDate)
-    setUserPaymentDetails(paymentDetails)
-    setUserNotes(notes)
+    if (userId && email && signUpDate) {
+      setId(userId)
+      setUserEmail(email)
+      setUserMobile(mobile)
+      setUserSignUpDate(signUpDate)
+      setUserPaymentDetails(paymentDetails)
+      setUserNotes(notes)
+    }
   }, [userId, email, mobile, signUpDate, paymentDetails, notes])
 
   if (isUserSettingsLoading) return <Loading />
@@ -76,7 +77,7 @@ const UserInfo = () => {
               className="form-control"
               id="mobile"
               name="mobile"
-              value={userMobile}
+              value={userMobile || ''}
               onChange={(e) => setUserMobile(e.target.value)}
               placeholder="Phone Number"
             />
@@ -103,7 +104,7 @@ const UserInfo = () => {
               className="form-control"
               id="paymentDetails"
               name="paymentDetails"
-              value={userPaymentDetails}
+              value={userPaymentDetails || ''}
               onChange={(e) => setUserPaymentDetails(e.target.value)}
               rows="4"
               placeholder="Any payment details?"
@@ -117,7 +118,7 @@ const UserInfo = () => {
                 className="form-control"
                 name="notes"
                 id="notes"
-                value={userNotes}
+                value={userNotes || ''}
                 onChange={(e) => setUserNotes(e.target.value)}
                 rows="4"
                 placeholder="Any notes?"

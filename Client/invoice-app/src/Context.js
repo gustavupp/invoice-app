@@ -5,7 +5,7 @@ const AppContext = React.createContext()
 const intialState = {
   invoices: [],
   isEditingInvoice: false,
-  userInfo: [],
+  userInfo: {},
   isInvoiceLoading: false,
   isUserSettingsLoading: false,
   isPaginationLoading: true,
@@ -192,14 +192,14 @@ const AppProvider = ({ children }) => {
   }
 
   //add user to db
-  const addUserToDb = async (email, userId) => {
+  const addUserToDb = async (email, userId, nickname, picture, name) => {
     const options = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      body: JSON.stringify({ email, userId }),
+      body: JSON.stringify({ email, userId, nickname, picture, name }),
     }
     try {
       const response = await fetch(
@@ -220,7 +220,7 @@ const AppProvider = ({ children }) => {
         `https://simply-invoice-app.herokuapp.com/api/user/${userId}`
       )
       const data = await response.json()
-      dispatch({ type: 'ADD_USER_INFO', payload: data })
+      dispatch({ type: 'ADD_USER_INFO', payload: data[0] })
       setIsUserSettingsLoading(false)
     } catch (error) {
       throw error

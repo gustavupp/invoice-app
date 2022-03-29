@@ -6,10 +6,8 @@ import { FaDownload } from 'react-icons/fa'
 import '../styles/invoiceTemplate.css'
 
 export function InvoiceTemplate() {
-  const {
-    invoices,
-    userInfo: [{ email = '', mobile = '' } = {}],
-  } = useContext(AppContext)
+  const { invoices, userInfo: { email = '', mobile = '' } = {} } =
+    useContext(AppContext)
   const [subtotal, setSubtotal] = useState('')
   const [invoiceFrom, setInvoiceFrom] = useState('')
   const [billTo, setBillTo] = useState('')
@@ -43,7 +41,7 @@ export function InvoiceTemplate() {
       setDate(date)
       setInvoiceNumber(invoiceNumber)
       setImage(image)
-      setLineItems(JSON.parse(lineItems))
+      setLineItems(lineItems)
       setPaymentDetails(paymentDetails)
       setNotes(notes)
     }

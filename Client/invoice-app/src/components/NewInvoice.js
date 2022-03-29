@@ -20,7 +20,7 @@ export const NewInvoice = () => {
     setIsInvoiceLoading,
     isInvoiceLoading,
     setIsEditingInvoice,
-    userInfo: [{ notes: userNotes, paymentDetails: userPaymentDetails } = {}],
+    userInfo: { notes: userNotes, paymentDetails: userPaymentDetails } = {},
   } = useContext(AppContext)
 
   const { invoiceId } = useParams()
@@ -68,7 +68,7 @@ export const NewInvoice = () => {
       setDate(date)
       setInvoiceNumber(invoiceNumber)
       setImage(image)
-      setLineItems(JSON.parse(lineItems))
+      setLineItems(lineItems)
       setPaymentDetails(paymentDetails)
       setNotes(notes)
     }
