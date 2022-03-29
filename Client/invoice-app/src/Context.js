@@ -185,7 +185,7 @@ const AppProvider = ({ children }) => {
         `https://simply-invoice-app.herokuapp.com/api/user/${userId}`
       )
       const data = await response.json()
-      return data
+      return data[0] //return the object inside the array only
     } catch (error) {
       throw error
     }
